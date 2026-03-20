@@ -236,11 +236,11 @@
         break;
 
       case 'system':
-        addSystemBubble(data.text);
+        // Skip system messages, only show user messages
         break;
 
       case 'users':
-        updateOnlineCount(data.count);
+        // Skip online count display
         break;
     }
   }
