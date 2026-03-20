@@ -149,8 +149,7 @@ body {
 }
 .hero-bg {
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, #1a365d 0%, #0f172a 50%, #1e3a5f 100%);
-  animation: aurora 8s ease-in-out infinite alternate;
+  background: url('https://images.unsplash.com/photo-1506377585622-bedcbb027afc?w=1200&q=80') center/cover no-repeat;
 }
 @keyframes aurora {
   0% { background-position: 0% 50%; }

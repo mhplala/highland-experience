@@ -217,3 +217,86 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`   Uploads: ${path.join(__dirname, 'uploads')}`);
   console.log(`   Database: ${path.join(__dirname, 'highland.db')}`);
 });
+
+// ===== Chips API =====
+db.exec(`CREATE TABLE IF NOT EXISTS chips (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  player TEXT NOT NULL UNIQUE,
+  amount INTEGER NOT NULL DEFAULT 1000,
+  updated_at TEXT DEFAULT (datetime('now'))
+)`);
+
+db.exec(`CREATE TABLE IF NOT EXISTS chip_logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  from_player TEXT,
+  to_player TEXT,
+  amount INTEGER NOT NULL,
+  type TEXT NOT NULL,
+  note TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+)`);
+
+// Get all players and chips
+app.get('/api/chips', (req, res) => {
+  const players = db.prepare('SELECT * FROM chips ORDER BY amount DESC').all();
+  const logs = db.prepare('SELECT * FROM chip_logs ORDER BY id DESC LIMIT 50').all();
+  res.json({ players, logs });
+});
+
+// Add/join a player
+app.post('/api/chips/join', (req, res) => {
+  const { player, amount } = req.body;
+  const initial = amount || 1000;
+  try {
+    db.prepare('INSERT OR IGNORE INTO chips (player, amount) VALUES (?, ?)').run(player, initial);
+    const p = db.prepare('SELECT * FROM chips WHERE player = ?').get(player);
+    db.prepare('INSERT INTO chip_logs (from_player, to_player, amount, type, note) VALUES (?, ?, ?, ?, ?)').run(null, player, initial, 'join', player + ' 加入游戏');
+    broadcastChips();
+    res.json(p);
+  } catch(e) { res.status(400).json({ error: e.message }); }
+});
+
+// Transfer chips between players
+app.post('/api/chips/transfer', (req, res) => {
+  const { from, to, amount, note } = req.body;
+  if (!from || !to || !amount || amount <= 0) return res.status(400).json({ error: '参数错误' });
+  
+  const sender = db.prepare('SELECT * FROM chips WHERE player = ?').get(from);
+  if (!sender || sender.amount < amount) return res.status(400).json({ error: '筹码不足' });
+  
+  db.prepare('UPDATE chips SET amount = amount - ?, updated_at = datetime("now") WHERE player = ?').run(amount, from);
+  db.prepare('UPDATE chips SET amount = amount + ?, updated_at = datetime("now") WHERE player = ?').run(amount, to);
+  db.prepare('INSERT INTO chip_logs (from_player, to_player, amount, type, note) VALUES (?, ?, ?, ?, ?)').run(from, to, amount, 'transfer', note || '');
+  
+  broadcastChips();
+  res.json({ success: true });
+});
+
+// Adjust chips (admin: add/deduct)
+app.post('/api/chips/adjust', (req, res) => {
+  const { player, amount, note } = req.body;
+  if (!player || !amount) return res.status(400).json({ error: '参数错误' });
+  
+  db.prepare('UPDATE chips SET amount = amount + ?, updated_at = datetime("now") WHERE player = ?').run(amount, player);
+  const type = amount > 0 ? 'add' : 'deduct';
+  db.prepare('INSERT INTO chip_logs (from_player, to_player, amount, type, note) VALUES (?, ?, ?, ?, ?)').run(null, player, Math.abs(amount), type, note || '');
+  
+  broadcastChips();
+  res.json({ success: true });
+});
+
+// Reset all
+app.post('/api/chips/reset', (req, res) => {
+  db.prepare('DELETE FROM chips').run();
+  db.prepare('DELETE FROM chip_logs').run();
+  broadcastChips();
+  res.json({ success: true });
+});
+
+// Broadcast chip updates via WebSocket
+function broadcastChips() {
+  const players = db.prepare('SELECT * FROM chips ORDER BY amount DESC').all();
+  const logs = db.prepare('SELECT * FROM chip_logs ORDER BY id DESC LIMIT 20').all();
+  const msg = JSON.stringify({ type: 'chips', players, logs });
+  wss.clients.forEach(c => { if (c.readyState === 1) c.send(msg); });
+}

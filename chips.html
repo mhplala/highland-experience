@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>🃏 筹码桌</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0f1a; --card: rgba(255,255,255,0.06); --border: rgba(255,255,255,0.1);
+      --text: #f1f5f9; --muted: #64748b; --accent: #3b82f6; --green: #22c55e; --red: #ef4444; --gold: #f59e0b;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    .container { max-width: 500px; margin: 0 auto; padding: 1rem; }
+    
+    .header { text-align: center; padding: 1.5rem 0 1rem; }
+    .header h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+    .header .sub { color: var(--muted); font-size: 0.85rem; }
+    .live-dot { display: inline-block; width: 8px; height: 8px; background: var(--green); border-radius: 50%; margin-right: 4px; animation: pulse 2s infinite; }
+    @keyframes pulse { 50% { opacity: 0.5; } }
+
+    .join-section { margin-bottom: 1.5rem; }
+    .join-row { display: flex; gap: 0.5rem; }
+    .join-row input {
+      flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.75rem 1rem; color: var(--text); font-size: 1rem; outline: none;
+    }
+    .join-row input:focus { border-color: var(--accent); }
+    .join-row button {
+      background: var(--accent); color: white; border: none; border-radius: 12px;
+      padding: 0.75rem 1.25rem; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    }
+
+    .leaderboard { margin-bottom: 1.5rem; }
+    .leaderboard h2 { font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    
+    .player-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .player-card.me { border-color: var(--accent); background: rgba(59,130,246,0.08); }
+    .player-rank { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; margin-right: 0.75rem; }
+    .player-rank.gold { background: rgba(245,158,11,0.2); color: var(--gold); }
+    .player-rank.silver { background: rgba(148,163,184,0.2); color: #94a3b8; }
+    .player-rank.bronze { background: rgba(180,83,9,0.2); color: #b45309; }
+    .player-info { flex: 1; }
+    .player-name { font-weight: 600; font-size: 1rem; }
+    .player-chips { font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+    
+    .actions { margin-bottom: 1.5rem; }
+    .actions h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .action-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1rem; margin-bottom: 0.75rem;
+    }
+    .action-title { font-weight: 600; margin-bottom: 0.75rem; font-size: 0.95rem; }
+    .action-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .action-row select, .action-row input {
+      flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.6rem 0.75rem; color: var(--text); font-size: 0.9rem; outline: none;
+    }
+    .action-row select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+    .btn-transfer { background: var(--accent); color: white; border: none; border-radius: 10px; padding: 0.6rem 1.25rem; font-weight: 600; cursor: pointer; font-size: 0.9rem; width: 100%; }
+    .btn-add { background: var(--green); color: white; border: none; border-radius: 10px; padding: 0.6rem 1rem; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+    .btn-deduct { background: var(--red); color: white; border: none; border-radius: 10px; padding: 0.6rem 1rem; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+    
+    .quick-chips { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .chip-btn {
+      background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 20px; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    }
+    .chip-btn:active { transform: scale(0.95); }
+    .chip-btn.selected { background: var(--gold); color: black; }
+
+    .log-section { margin-bottom: 2rem; }
+    .log-section h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .log-item {
+      padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+      font-size: 0.85rem; color: var(--muted); display: flex; justify-content: space-between;
+    }
+    .log-item .log-text { flex: 1; }
+    .log-item .log-amount { font-weight: 600; }
+    .log-item .log-amount.plus { color: var(--green); }
+    .log-item .log-amount.minus { color: var(--red); }
+    .log-time { font-size: 0.75rem; color: var(--muted); margin-left: 0.5rem; }
+    
+    .toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.9); color: white; padding: 0.6rem 1.2rem;
+      border-radius: 20px; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🃏 筹码桌</h1>
+      <div class="sub"><span class="live-dot"></span>实时同步 · Highland Express</div>
+    </div>
+
+    <div class="join-section">
+      <div class="join-row">
+        <input type="text" id="joinName" placeholder="输入你的名字" />
+        <button onclick="joinGame()">加入</button>
+      </div>
+    </div>
+
+    <div class="leaderboard">
+      <h2>🏆 筹码排行</h2>
+      <div id="playerList"></div>
+    </div>
+
+    <div class="actions" id="actionsSection" style="display:none">
+      <h2>💰 操作</h2>
+      
+      <div class="action-card">
+        <div class="action-title">转账给玩家</div>
+        <div class="action-row">
+          <select id="transferTo"></select>
+          <input type="number" id="transferAmount" placeholder="金额" min="1" />
+        </div>
+        <div class="quick-chips" id="quickTransfer"></div>
+        <button class="btn-transfer" onclick="doTransfer()">💸 转账</button>
+      </div>
+
+      <div class="action-card">
+        <div class="action-title">买入 / 调整</div>
+        <div class="action-row">
+          <input type="number" id="adjustAmount" placeholder="金额" min="1" />
+          <button class="btn-add" onclick="doAdjust(1)">+ 买入</button>
+          <button class="btn-deduct" onclick="doAdjust(-1)">- 扣除</button>
+        </div>
+        <div class="quick-chips" id="quickAdjust"></div>
+      </div>
+    </div>
+
+    <div class="log-section">
+      <h2>📜 交易记录</h2>
+      <div id="logList"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let myName = localStorage.getItem('chip-player') || '';
+    let ws;
+    const API = window.location.origin;
+
+    if (myName) {
+      document.getElementById('joinName').value = myName;
+      joinGame(true);
+    }
+    loadData();
+    connectWS();
+
+    function connectWS() {
+      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(`${proto}//${location.host}`);
+      ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        if (data.type === 'chips') renderData(data);
+      };
+      ws.onclose = () => setTimeout(connectWS, 3000);
+    }
+
+    async function loadData() {
+      try {
+        const res = await fetch(API + '/api/chips');
+        const data = await res.json();
+        renderData(data);
+      } catch(e) {}
+    }
+
+    async function joinGame(silent) {
+      const name = document.getElementById('joinName').value.trim();
+      if (!name) return;
+      myName = name;
+      localStorage.setItem('chip-player', name);
+
+      try {
+        await fetch(API + '/api/chips/join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ player: name, amount: 1000 })
+        });
+        document.getElementById('actionsSection').style.display = 'block';
+        if (!silent) showToast('🎰 加入成功！初始筹码 1000');
+        loadData();
+      } catch(e) { showToast('❌ 加入失败'); }
+    }
+
+    async function doTransfer() {
+      const to = document.getElementById('transferTo').value;
+      const amount = parseInt(document.getElementById('transferAmount').value);
+      if (!to || !amount || amount <= 0) return showToast('⚠️ 请选择玩家和金额');
+
+      try {
+        const res = await fetch(API + '/api/chips/transfer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ from: myName, to, amount })
+        });
+        const data = await res.json();
+        if (data.error) return showToast('❌ ' + data.error);
+        document.getElementById('transferAmount').value = '';
+        showToast(`💸 转了 ${amount} 给 ${to}`);
+      } catch(e) { showToast('❌ 转账失败'); }
+    }
+
+    async function doAdjust(sign) {
+      const amount = parseInt(document.getElementById('adjustAmount').value) * sign;
+      if (!amount) return showToast('⚠️ 请输入金额');
+
+      try {
+        await fetch(API + '/api/chips/adjust', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ player: myName, amount, note: sign > 0 ? '买入' : '扣除' })
+        });
+        document.getElementById('adjustAmount').value = '';
+        showToast(sign > 0 ? `🎰 买入 ${Math.abs(amount)}` : `💔 扣除 ${Math.abs(amount)}`);
+      } catch(e) { showToast('❌ 操作失败'); }
+    }
+
+    function setQuick(inputId, val) {
+      document.getElementById(inputId).value = val;
+    }
+
+    function renderData(data) {
+      const { players, logs } = data;
+      
+      // Leaderboard
+      const list = document.getElementById('playerList');
+      if (players.length === 0) {
+        list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:2rem">还没有玩家加入</div>';
+      } else {
+        list.innerHTML = players.map((p, i) => {
+          const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+          const rankIcon = i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+          const isMe = p.player === myName;
+          return `
+            <div class="player-card ${isMe ? 'me' : ''}">
+              <div class="player-rank ${rankClass}">${rankIcon}</div>
+              <div class="player-info">
+                <div class="player-name">${p.player}${isMe ? ' (我)' : ''}</div>
+              </div>
+              <div class="player-chips">${p.amount.toLocaleString()}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Transfer dropdown
+      const select = document.getElementById('transferTo');
+      if (select) {
+        const others = players.filter(p => p.player !== myName);
+        select.innerHTML = '<option value="">选择玩家</option>' + 
+          others.map(p => `<option value="${p.player}">${p.player} (${p.amount})</option>`).join('');
+      }
+
+      // Quick chips
+      const quicks = [50, 100, 200, 500];
+      document.getElementById('quickTransfer').innerHTML = quicks.map(v => 
+        `<div class="chip-btn" onclick="setQuick('transferAmount',${v})">${v}</div>`
+      ).join('');
+      document.getElementById('quickAdjust').innerHTML = quicks.map(v => 
+        `<div class="chip-btn" onclick="setQuick('adjustAmount',${v})">${v}</div>`
+      ).join('');
+
+      // Show actions if joined
+      if (myName && players.find(p => p.player === myName)) {
+        document.getElementById('actionsSection').style.display = 'block';
+      }
+
+      // Logs
+      const logEl = document.getElementById('logList');
+      if (logs && logs.length > 0) {
+        logEl.innerHTML = logs.map(l => {
+          let text, amtClass;
+          if (l.type === 'join') { text = `🎰 ${l.to_player} 加入游戏`; amtClass = 'plus'; }
+          else if (l.type === 'transfer') { text = `${l.from_player} → ${l.to_player}`; amtClass = ''; }
+          else if (l.type === 'add') { text = `${l.to_player} 买入`; amtClass = 'plus'; }
+          else { text = `${l.to_player} 扣除`; amtClass = 'minus'; }
+          return `
+            <div class="log-item">
+              <span class="log-text">${text}</span>
+              <span class="log-amount ${amtClass}">${l.type === 'deduct' ? '-' : '+'}${l.amount}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        logEl.innerHTML = '<div style="color:var(--muted);text-align:center;padding:1rem">暂无记录</div>';
+      }
+    }
+
+    function showToast(text) {
+      const t = document.getElementById('toast');
+      t.textContent = text; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+  </script>
+</body>
+</html>
