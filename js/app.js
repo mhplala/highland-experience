@@ -3,8 +3,8 @@
   'use strict';
 
   // ===== Data =====
-  const TRIP_START = new Date('2026-03-20T23:45:00Z'); // Departure from London Euston
-  const TRIP_ARRIVE = new Date('2026-03-21T07:30:00Z'); // Arrival Glasgow
+  const TRIP_START = new Date('2026-03-20T23:45:00Z');
+  const TRIP_ARRIVE = new Date('2026-03-21T07:30:00Z');
 
   const TRAIN_ROUTE = {
     from: { name: 'London Euston', lat: 51.5284, lng: -0.1331 },
@@ -19,15 +19,11 @@
 
   const SPOTS = [
     {
-      id: 'glencoe',
-      name: 'Glen Coe',
-      tag: '必访',
-      meta: '高地之心 · 壮丽峡谷',
-      lat: 56.6823, lng: -5.1024,
-      color: '#1a365d',
+      id: 'glencoe', name: 'Glen Coe', tag: '必访', meta: '高地之心 · 壮丽峡谷',
+      lat: 56.6823, lng: -5.1024, color: '#1a365d',
       gradient: 'linear-gradient(135deg, #1a365d 0%, #2d3748 100%)',
       subtitle: '苏格兰最戏剧性的峡谷',
-      story: `Glen Coe（格伦科峡谷）是苏格兰高地最震撼人心的自然景观。这个U型冰川峡谷两侧是陡峭的山壁，云雾常年缭绕，仿佛走入了史诗电影的布景。\n\n1692年，这里发生了臭名昭著的"格伦科大屠杀"——坎贝尔氏族在此屠杀了麦克唐纳氏族38人。这段血腥的历史为这片土地增添了悲壮的色彩。\n\n现在的Glen Coe是徒步者的天堂。"Lost Valley"（失落山谷）是最经典的路线，穿过瀑布和巨石，到达一片隐秘的高山草甸。站在山顶，你会理解为什么苏格兰人说"自由是无价的"。`,
+      story: `Glen Coe（格伦科峡谷）是苏格兰高地最震撼人心的自然景观。这个U型冰川峡谷两侧是陡峭的山壁，云雾常年缭绕，仿佛走入了史诗电影的布景。\n\n1692年，这里发生了臭名昭著的"格伦科大屠杀"——坎贝尔氏族在此屠杀了麦克唐纳氏族38人。\n\n现在的Glen Coe是徒步者的天堂。"Lost Valley"是最经典的路线，穿过瀑布和巨石，到达一片隐秘的高山草甸。`,
       facts: [
         { icon: '🏔', value: '1,150m', label: '最高峰' },
         { icon: '🌧', value: '3,000mm', label: '年降水量' },
@@ -36,15 +32,11 @@
       ]
     },
     {
-      id: 'skye',
-      name: 'Isle of Skye',
-      tag: '梦幻之岛',
-      meta: '天空岛 · 仙境般的地貌',
-      lat: 57.2736, lng: -6.2155,
-      color: '#312e81',
+      id: 'skye', name: 'Isle of Skye', tag: '梦幻之岛', meta: '天空岛 · 仙境般的地貌',
+      lat: 57.2736, lng: -6.2155, color: '#312e81',
       gradient: 'linear-gradient(135deg, #312e81 0%, #1e1b4b 100%)',
       subtitle: '维京人称之为"云雾之岛"',
-      story: `Isle of Skye（天空岛）是苏格兰最浪漫的存在。维京人最早发现这座岛时，因为它常年被云雾笼罩，便称之为"Skuyö"——云雾之岛。\n\nOld Man of Storr是岛上最标志性的地貌——一根50米高的玄武岩柱矗立在悬崖之上，像一位永恒的守望者。Fairy Pools（仙女池）则是另一个奇迹，翡翠色的泉水在黑色岩石间流淌，据说夜间会有精灵在此沐浴。\n\n天空岛的天气瞬息万变——可能五分钟内经历阳光、暴雨、彩虹和冰雹。当地人说：如果你不喜欢现在的天气，等五分钟就好。这种不可预测性正是它的魅力。`,
+      story: `Isle of Skye（天空岛）是苏格兰最浪漫的存在。Old Man of Storr是岛上最标志性的地貌——一根50米高的玄武岩柱矗立在悬崖之上。Fairy Pools（仙女池）则是另一个奇迹，翡翠色的泉水在黑色岩石间流淌。`,
       facts: [
         { icon: '🌊', value: '1,656km²', label: '岛屿面积' },
         { icon: '🧚', value: 'Fairy Pools', label: '仙女池' },
@@ -53,15 +45,11 @@
       ]
     },
     {
-      id: 'lochness',
-      name: 'Loch Ness',
-      tag: '传说',
-      meta: '尼斯湖 · 水怪的故乡',
-      lat: 57.3229, lng: -4.4244,
-      color: '#064e3b',
+      id: 'lochness', name: 'Loch Ness', tag: '传说', meta: '尼斯湖 · 水怪的故乡',
+      lat: 57.3229, lng: -4.4244, color: '#064e3b',
       gradient: 'linear-gradient(135deg, #064e3b 0%, #0f172a 100%)',
       subtitle: '世界上最神秘的湖泊',
-      story: `Loch Ness（尼斯湖）全长37公里，最深处达230米，储水量比英格兰和威尔士所有湖泊的总和还要多。这片深邃的淡水湖因为一个传说而闻名世界——尼斯湖水怪。\n\n最早的记录可以追溯到公元565年，爱尔兰修道士圣科伦巴据称在湖中遇见了一只巨大的水怪。1933年的一张模糊照片（后被证明是恶作剧）让"Nessie"成为了全球最著名的密码动物学话题。\n\n不管水怪存不存在，尼斯湖本身就足够令人敬畏。湖水因为泥炭的缘故呈现深邃的墨色，能见度几乎为零。站在湖畔的Urquhart Castle废墟上远眺，你会感到一种原始的、不可名状的力量。`,
+      story: `Loch Ness（尼斯湖）全长37公里，最深处达230米，储水量比英格兰和威尔士所有湖泊的总和还要多。这片深邃的淡水湖因为尼斯湖水怪传说而闻名世界。`,
       facts: [
         { icon: '🐉', value: '1,000+', label: '目击报告' },
         { icon: '💧', value: '230m', label: '最深处' },
@@ -70,32 +58,24 @@
       ]
     },
     {
-      id: 'edinburgh',
-      name: 'Edinburgh',
-      tag: '文化首都',
-      meta: '爱丁堡 · 启蒙运动的摇篮',
-      lat: 55.9533, lng: -3.1883,
-      color: '#7c2d12',
+      id: 'edinburgh', name: 'Edinburgh', tag: '文化首都', meta: '爱丁堡 · 启蒙运动的摇篮',
+      lat: 55.9533, lng: -3.1883, color: '#7c2d12',
       gradient: 'linear-gradient(135deg, #7c2d12 0%, #451a03 100%)',
       subtitle: '亚当·斯密在这里写下了《国富论》',
-      story: `Edinburgh（爱丁堡）是一座建在七座山丘上的城市。旧城的Royal Mile从Edinburgh Castle一路延伸到Holyrood Palace，每一块石头都写满了故事。\n\n18世纪的苏格兰启蒙运动在这里达到顶峰——大卫·休谟在此质疑人类认知的本质，亚当·斯密写出了改变世界的《国富论》。这座城市当时被称为"北方的雅典"。\n\nArthur's Seat是爱丁堡的制高点，一座位于城市中心的古火山。站在山顶，你可以看到整座城市铺展在脚下——古老的尖塔、现代的新城、远处的福斯湾。黄昏时分，整座城市被金色的光芒笼罩，你会明白为什么J.K.罗琳选择在这里写《哈利·波特》。`,
+      story: `Edinburgh（爱丁堡）是一座建在七座山丘上的城市。18世纪的苏格兰启蒙运动在这里达到顶峰——大卫·休谟在此质疑人类认知的本质，亚当·斯密写出了《国富论》。`,
       facts: [
         { icon: '📚', value: '1583', label: '大学创立' },
         { icon: '🎭', value: '最大', label: '艺术节' },
-        { icon: '🏔', value: '251m', label: "亚瑟王座" },
+        { icon: '🏔', value: '251m', label: '亚瑟王座' },
         { icon: '🧙', value: 'HP', label: '创作之地' }
       ]
     },
     {
-      id: 'bennevis',
-      name: 'Ben Nevis',
-      tag: '挑战',
-      meta: '英国最高峰 · 1,345米',
-      lat: 56.7969, lng: -5.0036,
-      color: '#1e3a5f',
+      id: 'bennevis', name: 'Ben Nevis', tag: '挑战', meta: '英国最高峰 · 1,345米',
+      lat: 56.7969, lng: -5.0036, color: '#1e3a5f',
       gradient: 'linear-gradient(135deg, #1e3a5f 0%, #0c1929 100%)',
       subtitle: '站在不列颠群岛之巅',
-      story: `Ben Nevis（本尼维斯山）海拔1,345米，是不列颠群岛的最高峰。每年约有15万人尝试登顶，但不要因此低估它的难度——山顶一年中有300天被云雾覆盖，天气可以在几分钟内从晴朗变为暴风雪。\n\n最常走的"Pony Track"路线全程约16公里，需要7-9小时。路线看似温和，但越往上走，风越大、温度越低。在夏天的山脚可能是20度，而山顶可能接近零度。\n\n登顶的那一刻——如果天气允许你看到风景的话——是令人终生难忘的。你的视野所及是整个苏格兰高地的山峦起伏，远处是大西洋的银色光芒。每一步都是对自我的征服。`,
+      story: `Ben Nevis（本尼维斯山）海拔1,345米，是不列颠群岛的最高峰。每年约有15万人尝试登顶。最常走的"Pony Track"路线全程约16公里，需要7-9小时。`,
       facts: [
         { icon: '⛰️', value: '1,345m', label: '海拔' },
         { icon: '⏱', value: '7-9h', label: '往返时间' },
@@ -104,15 +84,11 @@
       ]
     },
     {
-      id: 'jacobite',
-      name: 'Jacobite Steam Train',
-      tag: '哈利波特',
-      meta: '蒸汽火车 · Glenfinnan高架桥',
-      lat: 56.8760, lng: -5.4386,
-      color: '#991b1b',
+      id: 'jacobite', name: 'Jacobite Steam Train', tag: '哈利波特', meta: '蒸汽火车 · Glenfinnan高架桥',
+      lat: 56.8760, lng: -5.4386, color: '#991b1b',
       gradient: 'linear-gradient(135deg, #991b1b 0%, #450a0a 100%)',
       subtitle: '霍格沃茨特快的原型',
-      story: `Jacobite Steam Train被誉为"世界上最伟大的铁路旅程"。这趟蒸汽火车从Fort William出发，穿越苏格兰高地最壮美的风景，终点站是渔港小镇Mallaig。\n\n旅程的高潮是穿越Glenfinnan Viaduct——一座建于1901年的21拱高架桥。没错，这就是《哈利·波特》电影中霍格沃茨特快列车驶过的那座桥。当火车缓缓驶上弧形的桥面，两侧是苍翠的山谷和远处闪光的湖面，蒸汽在桥拱间弥漫……这个画面你一定在电影里见过，但亲眼所见，震撼程度翻倍。\n\nGlenfinnan纪念碑矗立在湖畔，纪念的是1745年邦尼查理王子在此升起的詹姆斯党旗帜——一段浪漫而悲壮的反叛史。`,
+      story: `Jacobite Steam Train被誉为"世界上最伟大的铁路旅程"。旅程的高潮是穿越Glenfinnan Viaduct——一座建于1901年的21拱高架桥，就是《哈利·波特》电影中霍格沃茨特快列车驶过的那座桥。`,
       facts: [
         { icon: '🚂', value: '1901', label: '桥梁建成' },
         { icon: '🌉', value: '21拱', label: '高架桥' },
@@ -137,61 +113,334 @@
     { time: '3/23 周一 07:00', title: '💪 满血复活', desc: '抵达 London Euston，吃早餐，上班！', status: '' }
   ];
 
-  const CHAT_MESSAGES = [
-    { from: 'system', text: '🏔 苏格兰高地探险队 · 3月20-23日', time: '' },
-    { from: 'wz', name: '王泽', text: '哥哥们，大家带好自己洗漱用品，酒店除了提供床之外，毛都不给', time: '19:30' },
-    { from: 'wz', name: '王泽', text: '10:30 PM 在 Euston 车站集合！', time: '21:00' },
-    { from: 'clc', name: '蔡李超', text: '我到了，在大厅等', time: '22:20' },
-    { from: 'jxr', name: '靳雪荣', text: '出发了 差不多22:30到', time: '22:25' },
-    { from: 'steve', name: 'Steve', text: '我2234', time: '22:26' },
-    { from: 'wz', name: '王泽', text: '我还在洗澡…马上到！', time: '22:30' },
-    { from: 'james', name: 'James', text: '记得带护照！', time: '22:31' },
-    { from: 'cj', name: '蔡骏', text: '我在 Burger King', time: '22:35' },
-    { from: 'clc', name: '蔡李超', text: '我买好牌了 🃏', time: '22:37' },
-  ];
-
   // ===== State =====
   let currentPage = 'home';
   let map = null;
   let trainMarker = null;
-  let photos = JSON.parse(localStorage.getItem('highland-photos') || '[]');
   let weatherData = null;
+  let ws = null;
+  let username = localStorage.getItem('highland-username') || '';
+  let reconnectTimer = null;
 
   // ===== Init =====
   function init() {
-    // Splash screen
     setTimeout(() => {
       document.querySelector('.splash').classList.add('hide');
       document.querySelector('.app').classList.add('active');
-      setTimeout(() => document.querySelector('.splash').remove(), 800);
+      setTimeout(() => document.querySelector('.splash')?.remove(), 800);
     }, 2200);
 
     setupNav();
     renderHome();
     renderSpots();
-    renderChat();
-    renderPhotos();
+    renderSchedule();
     setupCountdown();
     fetchWeather();
     setupCamera();
     setupGestures();
 
-    // PWA
+    // Prompt for username then connect chat
+    if (!username) {
+      promptUsername();
+    } else {
+      connectChat();
+    }
+
+    loadPhotosFromServer();
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
 
-    // Periodic train update
     setInterval(updateTrainPosition, 5000);
+    updateTrainPosition();
+  }
+
+  // ===== Username Prompt =====
+  function promptUsername() {
+    const name = prompt('请输入你的昵称（聊天中显示）：');
+    if (name && name.trim()) {
+      username = name.trim();
+      localStorage.setItem('highland-username', username);
+      connectChat();
+    } else {
+      username = '旅行者' + Math.floor(Math.random() * 1000);
+      localStorage.setItem('highland-username', username);
+      connectChat();
+    }
+  }
+
+  // ===== WebSocket Chat =====
+  function connectChat() {
+    if (ws && ws.readyState <= 1) return;
+
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${proto}//${location.host}`;
+
+    try {
+      ws = new WebSocket(wsUrl);
+    } catch (e) {
+      console.error('WS connect failed:', e);
+      scheduleReconnect();
+      return;
+    }
+
+    ws.onopen = () => {
+      console.log('WS connected');
+      ws.send(JSON.stringify({ type: 'join', username }));
+      if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        handleWsMessage(data);
+      } catch (e) {
+        console.error('WS parse error:', e);
+      }
+    };
+
+    ws.onclose = () => {
+      console.log('WS disconnected');
+      scheduleReconnect();
+    };
+
+    ws.onerror = (e) => {
+      console.error('WS error:', e);
+    };
+  }
+
+  function scheduleReconnect() {
+    if (reconnectTimer) return;
+    reconnectTimer = setTimeout(() => {
+      reconnectTimer = null;
+      connectChat();
+    }, 3000);
+  }
+
+  function handleWsMessage(data) {
+    const msgs = document.getElementById('chat-messages');
+    if (!msgs) return;
+
+    switch (data.type) {
+      case 'history':
+        msgs.innerHTML = '';
+        data.messages.forEach(m => {
+          addChatBubble(m.username, m.text, m.timestamp, false);
+        });
+        msgs.scrollTop = msgs.scrollHeight;
+        break;
+
+      case 'message':
+        addChatBubble(data.username, data.text, data.timestamp, true);
+        break;
+
+      case 'system':
+        addSystemBubble(data.text);
+        break;
+
+      case 'users':
+        updateOnlineCount(data.count);
+        break;
+    }
+  }
+
+  function addChatBubble(sender, text, timestamp, animate) {
+    const msgs = document.getElementById('chat-messages');
+    if (!msgs) return;
+
+    const isMe = sender === username;
+    const div = document.createElement('div');
+    div.className = `chat-msg ${isMe ? 'outgoing' : 'incoming'}`;
+
+    const time = timestamp ? new Date(timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) : '';
+
+    if (isMe) {
+      div.innerHTML = `${escapeHtml(text)}<div class="chat-msg-meta">${time}</div>`;
+    } else {
+      div.innerHTML = `<div style="font-size:0.7rem;font-weight:600;color:var(--accent);margin-bottom:0.2rem">${escapeHtml(sender)}</div>${escapeHtml(text)}<div class="chat-msg-meta">${time}</div>`;
+    }
+
+    if (!animate) div.style.animation = 'none';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function addSystemBubble(text) {
+    const msgs = document.getElementById('chat-messages');
+    if (!msgs) return;
+    const div = document.createElement('div');
+    div.className = 'chat-msg incoming';
+    div.style.cssText = 'background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);max-width:100%;text-align:center;font-size:0.8rem';
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function updateOnlineCount(count) {
+    const el = document.querySelector('.chat-status');
+    if (el) el.textContent = `● ${count}人在线`;
+  }
+
+  function sendChatMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input?.value.trim();
+    if (!text) return;
+    if (!ws || ws.readyState !== 1) {
+      showToast('⚠️ 聊天未连接，正在重连...');
+      connectChat();
+      return;
+    }
+    ws.send(JSON.stringify({ type: 'message', text }));
+    input.value = '';
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ===== Photos (Server) =====
+  async function loadPhotosFromServer() {
+    try {
+      const res = await fetch('/api/photos');
+      const photos = await res.json();
+      renderPhotoGrid(photos);
+    } catch (e) {
+      console.error('Failed to load photos:', e);
+      renderPhotoGrid([]);
+    }
+  }
+
+  function renderPhotoGrid(photos) {
+    const container = document.getElementById('photo-timeline');
+    if (!container) return;
+
+    if (!photos || photos.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:3rem 1rem;color:var(--text-muted)">
+          <div style="font-size:3rem;margin-bottom:1rem">📸</div>
+          <div style="font-size:1.1rem;margin-bottom:0.5rem">还没有照片</div>
+          <div style="font-size:0.85rem">点击右下角相机按钮开始记录高地之旅！</div>
+        </div>
+      `;
+      return;
+    }
+
+    // Group by date
+    const groups = {};
+    photos.forEach(p => {
+      const d = p.timestamp ? p.timestamp.slice(0, 10) : 'unknown';
+      if (!groups[d]) groups[d] = [];
+      groups[d].push(p);
+    });
+
+    const sortedDates = Object.keys(groups).sort().reverse();
+    container.innerHTML = sortedDates.map(date => {
+      const label = date !== 'unknown'
+        ? new Date(date + 'T00:00:00').toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' })
+        : '未知日期';
+      return `
+        <div class="photo-day">
+          <div class="photo-day-label">${label}</div>
+          <div class="photo-grid">
+            ${groups[date].map(p => `
+              <div class="photo-thumb"
+                style="background:url(${p.url}) center/cover"
+                onclick="app.viewPhoto(${p.id})">
+                <span class="photo-loc">📍 ${escapeHtml(p.location || p.uploader || '')}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function viewPhoto(id) {
+    const viewer = document.getElementById('photo-viewer');
+    if (!viewer) return;
+    fetch(`/api/photos/${id}`)
+      .then(r => r.json())
+      .then(photo => {
+        viewer.querySelector('img').src = photo.url;
+        const info = viewer.querySelector('.photo-viewer-info');
+        if (info) {
+          info.textContent = `📍 ${photo.location || '未知位置'} · ${photo.uploader || ''} · ${photo.caption || ''}`;
+        }
+        viewer.classList.add('active');
+      })
+      .catch(() => showToast('❌ 加载照片失败'));
+  }
+
+  function closePhotoViewer() {
+    document.getElementById('photo-viewer')?.classList.remove('active');
+  }
+
+  // ===== Camera & Upload =====
+  function setupCamera() {
+    const captureBtn = document.querySelector('.photo-capture-btn');
+    captureBtn?.addEventListener('click', openCameraOrPicker);
+  }
+
+  function openCameraOrPicker() {
+    // Use file input for maximum compatibility (works on mobile + desktop)
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.capture = 'environment'; // Prefer rear camera on mobile
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      uploadPhoto(file);
+    };
+    input.click();
+  }
+
+  async function uploadPhoto(file) {
+    showToast('📤 正在上传...');
+
+    const formData = new FormData();
+    formData.append('photo', file);
+    formData.append('uploader', username || '匿名');
+    formData.append('caption', '');
+
+    // Try to get location
+    if (navigator.geolocation) {
+      try {
+        const pos = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+        });
+        formData.append('lat', pos.coords.latitude);
+        formData.append('lng', pos.coords.longitude);
+        formData.append('location', `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`);
+      } catch (e) {
+        // Location unavailable, proceed without
+      }
+    }
+
+    try {
+      const res = await fetch('/api/photos', { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('Upload failed');
+      showToast('📸 照片已上传！');
+      loadPhotosFromServer();
+    } catch (e) {
+      console.error('Upload error:', e);
+      showToast('❌ 上传失败');
+    }
   }
 
   // ===== Navigation =====
   function setupNav() {
     document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const page = item.dataset.page;
-        navigateTo(page);
-      });
+      item.addEventListener('click', () => navigateTo(item.dataset.page));
+    });
+
+    // Chat send
+    document.getElementById('chat-send')?.addEventListener('click', sendChatMessage);
+    document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendChatMessage();
     });
   }
 
@@ -210,30 +459,20 @@
     const target = document.querySelector(`.page-${page}`);
     if (target) {
       target.style.display = 'block';
-      // Force reflow for animation
       void target.offsetHeight;
       target.classList.add('active');
     }
 
-    // Show camera button only on photos page
     const camBtn = document.querySelector('.photo-capture-btn');
-    if (camBtn) {
-      camBtn.classList.toggle('visible', page === 'photos');
-    }
+    if (camBtn) camBtn.classList.toggle('visible', page === 'photos');
 
-    // Init map when switching to map page
-    if (page === 'map' && !map) {
-      setTimeout(initMap, 100);
-    }
-
-    // Haptic feedback
+    if (page === 'map' && !map) setTimeout(initMap, 100);
     if (navigator.vibrate) navigator.vibrate(10);
   }
 
-  // ===== Home Page =====
+  // ===== Home =====
   function renderHome() {
     updateWeatherWidget();
-    renderSchedule();
   }
 
   function renderSchedule() {
@@ -258,12 +497,10 @@
   function updateCountdown() {
     const now = new Date();
     const diff = TRIP_START - now;
-
     const el = document.getElementById('countdown');
     if (!el) return;
 
     if (diff <= 0) {
-      // Trip started, show arrival countdown or elapsed
       const arrDiff = TRIP_ARRIVE - now;
       if (arrDiff > 0) {
         const h = Math.floor(arrDiff / 3600000);
@@ -292,26 +529,14 @@
     `;
   }
 
-  // ===== Weather =====
+  // ===== Weather (via backend proxy) =====
   async function fetchWeather() {
     try {
-      // Use Open-Meteo free API for Glasgow/Highland area
-      const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=56.82&longitude=-5.10&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe/London&forecast_days=5');
+      const res = await fetch('/api/weather');
       weatherData = await res.json();
       updateWeatherWidget();
     } catch(e) {
-      console.log('Weather fetch failed, using fallback');
-      weatherData = {
-        current: { temperature_2m: 8, weather_code: 3, wind_speed_10m: 25, relative_humidity_2m: 78 },
-        daily: {
-          time: ['2026-04-10','2026-04-11','2026-04-12','2026-04-13','2026-04-14'],
-          weather_code: [3, 61, 2, 80, 1],
-          temperature_2m_max: [10, 9, 12, 8, 13],
-          temperature_2m_min: [4, 3, 5, 2, 6],
-          precipitation_probability_max: [20, 70, 30, 80, 15]
-        }
-      };
-      updateWeatherWidget();
+      console.log('Weather fetch failed:', e);
     }
   }
 
@@ -344,7 +569,7 @@
     const alert = document.getElementById('weather-alert');
     if (!widget) return;
 
-    if (!weatherData) {
+    if (!weatherData || !weatherData.current) {
       widget.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem">🌍 正在获取高地天气...</div>';
       return;
     }
@@ -362,7 +587,6 @@
       </div>
     `;
 
-    // 5-day forecast strip
     if (d && d.time) {
       const forecastEl = document.getElementById('weather-forecast');
       if (forecastEl) {
@@ -380,7 +604,6 @@
       }
     }
 
-    // Weather alert
     if (alert && d) {
       const rainIdx = d.precipitation_probability_max.findIndex(p => p > 60);
       if (rainIdx >= 0) {
@@ -396,19 +619,17 @@
   // ===== Train Tracker =====
   function getTrainProgress() {
     const now = new Date();
-    if (now < TRIP_START) return -1; // Not departed
-    if (now > TRIP_ARRIVE) return 1.01; // Arrived
+    if (now < TRIP_START) return -1;
+    if (now > TRIP_ARRIVE) return 1.01;
     return (now - TRIP_START) / (TRIP_ARRIVE - TRIP_START);
   }
 
   function getTrainPosition(progress) {
     if (progress < 0) return TRAIN_ROUTE.from;
     if (progress > 1) return TRAIN_ROUTE.to;
-    const from = TRAIN_ROUTE.from;
-    const to = TRAIN_ROUTE.to;
     return {
-      lat: from.lat + (to.lat - from.lat) * progress,
-      lng: from.lng + (to.lng - from.lng) * progress
+      lat: TRAIN_ROUTE.from.lat + (TRAIN_ROUTE.to.lat - TRAIN_ROUTE.from.lat) * progress,
+      lng: TRAIN_ROUTE.from.lng + (TRAIN_ROUTE.to.lng - TRAIN_ROUTE.from.lng) * progress
     };
   }
 
@@ -418,30 +639,19 @@
     const status = document.getElementById('train-status');
     const info = document.getElementById('train-info');
 
-    if (bar) {
-      const pct = Math.max(0, Math.min(100, progress * 100));
-      bar.style.width = pct + '%';
-    }
+    if (bar) bar.style.width = Math.max(0, Math.min(100, progress * 100)) + '%';
 
     if (status) {
-      if (progress < 0) {
-        status.textContent = '等待出发';
-        status.style.color = 'var(--highland-amber)';
-      } else if (progress > 1) {
-        status.textContent = '已到达 Glasgow';
-        status.style.color = 'var(--highland-green)';
-      } else {
-        status.textContent = '行驶中';
-        status.style.color = 'var(--highland-green)';
-      }
+      if (progress < 0) { status.textContent = '等待出发'; status.style.color = 'var(--highland-amber)'; }
+      else if (progress > 1) { status.textContent = '已到达 Glasgow'; status.style.color = 'var(--highland-green)'; }
+      else { status.textContent = '行驶中'; status.style.color = 'var(--highland-green)'; }
     }
 
     if (info) {
       const pos = getTrainPosition(Math.max(0, Math.min(1, progress)));
       const speed = progress >= 0 && progress <= 1 ? Math.round(80 + Math.random() * 40) : 0;
       const remaining = progress >= 0 && progress <= 1
-        ? Math.round((1 - progress) * (TRIP_ARRIVE - TRIP_START) / 60000)
-        : 0;
+        ? Math.round((1 - progress) * (TRIP_ARRIVE - TRIP_START) / 60000) : 0;
       const remH = Math.floor(remaining / 60);
       const remM = remaining % 60;
 
@@ -465,7 +675,6 @@
       `;
     }
 
-    // Update map marker
     if (map && trainMarker && progress >= 0 && progress <= 1) {
       const pos = getTrainPosition(progress);
       trainMarker.setLatLng([pos.lat, pos.lng]);
@@ -478,47 +687,22 @@
     const container = document.getElementById('map');
     if (!container) return;
 
-    map = L.map('map', {
-      center: [56.8, -5.0],
-      zoom: 7,
-      zoomControl: false,
-      attributionControl: false
-    });
+    map = L.map('map', { center: [56.8, -5.0], zoom: 7, zoomControl: false, attributionControl: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 }).addTo(map);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 18
-    }).addTo(map);
-
-    // Add spot markers
     SPOTS.forEach(spot => {
-      const marker = L.circleMarker([spot.lat, spot.lng], {
-        radius: 8,
-        fillColor: '#3b82f6',
-        color: '#1e40af',
-        weight: 2,
-        fillOpacity: 0.8
-      }).addTo(map);
-
-      marker.bindPopup(`
-        <div style="font-family:Inter,sans-serif;padding:0.25rem">
-          <strong>${spot.name}</strong><br>
-          <span style="font-size:0.8rem;color:#666">${spot.meta}</span>
-        </div>
-      `);
+      L.circleMarker([spot.lat, spot.lng], {
+        radius: 8, fillColor: '#3b82f6', color: '#1e40af', weight: 2, fillOpacity: 0.8
+      }).addTo(map).bindPopup(`<div style="font-family:Inter,sans-serif;padding:0.25rem"><strong>${spot.name}</strong><br><span style="font-size:0.8rem;color:#666">${spot.meta}</span></div>`);
     });
 
-    // Train route line
     const routeCoords = [
       [TRAIN_ROUTE.from.lat, TRAIN_ROUTE.from.lng],
       ...TRAIN_ROUTE.waypoints.map(w => [w.lat, w.lng]),
       [TRAIN_ROUTE.to.lat, TRAIN_ROUTE.to.lng]
     ];
-    L.polyline(routeCoords, {
-      color: '#3b82f6', weight: 3,
-      opacity: 0.6, dashArray: '8 8'
-    }).addTo(map);
+    L.polyline(routeCoords, { color: '#3b82f6', weight: 3, opacity: 0.6, dashArray: '8 8' }).addTo(map);
 
-    // Train marker
     const trainIcon = L.divIcon({
       html: '<div style="font-size:1.5rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))">🚂</div>',
       className: '', iconSize: [30, 30], iconAnchor: [15, 15]
@@ -528,11 +712,9 @@
     const pos = getTrainPosition(Math.max(0, Math.min(1, progress)));
     trainMarker = L.marker([pos.lat, pos.lng], { icon: trainIcon }).addTo(map);
 
-    // Station markers
     [TRAIN_ROUTE.from, TRAIN_ROUTE.to].forEach(s => {
       L.circleMarker([s.lat, s.lng], {
-        radius: 6, fillColor: '#22c55e',
-        color: '#166534', weight: 2, fillOpacity: 0.9
+        radius: 6, fillColor: '#22c55e', color: '#166534', weight: 2, fillOpacity: 0.9
       }).addTo(map).bindPopup(`<strong>${s.name}</strong>`);
     });
 
@@ -565,7 +747,6 @@
     const modal = document.getElementById('spot-modal');
     const content = modal.querySelector('.modal-body');
     const hero = modal.querySelector('.modal-hero');
-
     hero.style.background = spot.gradient;
 
     content.innerHTML = `
@@ -600,15 +781,13 @@
   function open360(id) {
     const spot = SPOTS.find(s => s.id === id);
     if (!spot) return;
-
     closeModal();
+
     const viewer = document.getElementById('viewer-360');
     const scene = viewer.querySelector('.viewer-360-scene');
     const title = viewer.querySelector('.viewer-360-title');
-
     title.textContent = spot.name;
 
-    // Real panoramic images from Wikimedia Commons (public domain / CC)
     const panoramaUrls = {
       glencoe: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Glencoe_panorama.jpg/2560px-Glencoe_panorama.jpg',
       skye: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg/2560px-Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg',
@@ -626,12 +805,9 @@
       scene.style.backgroundPosition = '0% 50%';
     } else {
       scene.style.background = spot.gradient;
-      scene.style.backgroundSize = '200% 200%';
     }
 
-    // Drag to pan panorama
     let dragging = false, startX = 0, startY = 0, bgX = 0, bgY = 50;
-
     const onMove = (e) => {
       if (!dragging) return;
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -642,15 +818,8 @@
       scene.style.backgroundPosition = `${bgX}px ${bgY}%`;
       startX = clientX; startY = clientY;
     };
-
-    const onStart = (e) => {
-      dragging = true;
-      startX = e.touches ? e.touches[0].clientX : e.clientX;
-      startY = e.touches ? e.touches[0].clientY : e.clientY;
-    };
-
+    const onStart = (e) => { dragging = true; startX = e.touches ? e.touches[0].clientX : e.clientX; startY = e.touches ? e.touches[0].clientY : e.clientY; };
     const onEnd = () => { dragging = false; };
-
     scene.onmousedown = onStart; scene.ontouchstart = onStart;
     document.onmousemove = onMove; document.ontouchmove = onMove;
     document.onmouseup = onEnd; document.ontouchend = onEnd;
@@ -662,296 +831,42 @@
     document.getElementById('viewer-360').classList.remove('active');
   }
 
-  // ===== Chat =====
-  function renderChat() {
-    const msgs = document.getElementById('chat-messages');
-    if (!msgs) return;
-
-    // Render existing messages
-    CHAT_MESSAGES.forEach(msg => addChatMessage(msg, false));
-    msgs.scrollTop = msgs.scrollHeight;
-
-    // Send button
-    const sendBtn = document.getElementById('chat-send');
-    const input = document.getElementById('chat-input');
-
-    sendBtn?.addEventListener('click', () => sendChatMessage());
-    input?.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendChatMessage();
-    });
-
-    // Voice recording
-    const voiceBtn = document.getElementById('chat-voice');
-    voiceBtn?.addEventListener('click', toggleVoiceRecording);
-  }
-
-  function addChatMessage(msg, animate = true) {
-    const msgs = document.getElementById('chat-messages');
-    if (!msgs) return;
-
-    const div = document.createElement('div');
-
-    if (msg.from === 'system') {
-      div.className = 'chat-msg incoming';
-      div.style.background = 'rgba(59,130,246,0.1)';
-      div.style.border = '1px solid rgba(59,130,246,0.2)';
-      div.style.maxWidth = '100%';
-      div.style.textAlign = 'center';
-      div.style.fontSize = '0.8rem';
-      div.innerHTML = msg.text;
-    } else if (msg.from === 'me') {
-      div.className = 'chat-msg outgoing';
-      div.innerHTML = `${msg.text}<div class="chat-msg-meta">${msg.time}</div>`;
-    } else {
-      div.className = 'chat-msg incoming';
-      div.innerHTML = `<div style="font-size:0.7rem;font-weight:600;color:var(--accent);margin-bottom:0.2rem">${msg.name}</div>${msg.text}<div class="chat-msg-meta">${msg.time}</div>`;
-    }
-
-    if (!animate) div.style.animation = 'none';
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function sendChatMessage() {
-    const input = document.getElementById('chat-input');
-    const text = input?.value.trim();
-    if (!text) return;
-
-    const now = new Date();
-    const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-
-    addChatMessage({ from: 'me', text, time });
-    input.value = '';
-
-    // Simulate response
-    setTimeout(() => {
-      const responses = [
-        { from: 'wz', name: '王泽', text: '收到！大家记得带护照 🛂' },
-        { from: 'james', name: 'James', text: '好的好的 👍' },
-        { from: 'clc', name: '蔡李超', text: '了解！🃏' },
-        { from: 'jxr', name: '靳雪荣', text: '在路上了 🚶' },
-        { from: 'cj', name: '蔡骏', text: 'OK 收到 ✅' },
-        { from: 'steve', name: 'Steve', text: '👍' },
-      ];
-      const resp = responses[Math.floor(Math.random() * responses.length)];
-      resp.time = time;
-      addChatMessage(resp);
-    }, 1000 + Math.random() * 2000);
-  }
-
-  // Voice Recording
-  let mediaRecorder = null;
-  let audioChunks = [];
-
-  function toggleVoiceRecording() {
-    const btn = document.getElementById('chat-voice');
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-      mediaRecorder.stop();
-      btn.classList.remove('recording');
-      return;
-    }
-
-    navigator.mediaDevices?.getUserMedia({ audio: true })
-      .then(stream => {
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-          stream.getTracks().forEach(t => t.stop());
-          const now = new Date();
-          const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-          addChatMessage({ from: 'me', text: '🎙️ [语音消息 ' + Math.round(audioChunks.length * 0.5) + 's]', time });
-          showToast('🎙️ 语音消息已发送');
-        };
-        mediaRecorder.start(500);
-        btn.classList.add('recording');
-        showToast('🎙️ 录音中...');
-      })
-      .catch(() => showToast('❌ 无法访问麦克风'));
-  }
-
-  // ===== Photos =====
-  function renderPhotos() {
-    const container = document.getElementById('photo-timeline');
-    if (!container) return;
-
-    // Only real photos (user-captured)
-    const allPhotos = [...photos];
-
-    // Group by date
-    const groups = {};
-    allPhotos.forEach(p => {
-      const d = p.date || new Date().toISOString().slice(0,10);
-      if (!groups[d]) groups[d] = [];
-      groups[d].push(p);
-    });
-
-    const sortedDates = Object.keys(groups).sort().reverse();
-
-    if (sortedDates.length === 0) {
-      container.innerHTML = `
-        <div style="text-align:center;padding:3rem 1rem;color:var(--text-muted)">
-          <div style="font-size:3rem;margin-bottom:1rem">📸</div>
-          <div style="font-size:1.1rem;margin-bottom:0.5rem">还没有照片</div>
-          <div style="font-size:0.85rem">点击右下角相机按钮开始记录高地之旅！</div>
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = sortedDates.map(date => {
-      const label = new Date(date + 'T00:00:00').toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' });
-      return `
-        <div class="photo-day">
-          <div class="photo-day-label">${label}</div>
-          <div class="photo-grid">
-            ${groups[date].map(p => `
-              <div class="photo-thumb" 
-                style="background:${p.src ? `url(${p.src})` : p.color || '#333'}" 
-                onclick="app.viewPhoto('${p.id}')">
-                <span class="photo-loc">📍 ${p.location || '未知'}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function viewPhoto(id) {
-    const viewer = document.getElementById('photo-viewer');
-    if (!viewer) return;
-    // For demo, show a placeholder
-    viewer.querySelector('img').src = 'data:image/svg+xml,' + encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect width="800" height="600" fill="#1a365d"/><text x="400" y="300" text-anchor="middle" fill="white" font-size="24" font-family="sans-serif">📸 ${id}</text></svg>`
-    );
-    viewer.classList.add('active');
-  }
-
-  function closePhotoViewer() {
-    document.getElementById('photo-viewer')?.classList.remove('active');
-  }
-
-  // ===== Camera =====
-  function setupCamera() {
-    const captureBtn = document.querySelector('.photo-capture-btn');
-    captureBtn?.addEventListener('click', openCamera);
-  }
-
-  function openCamera() {
-    const modal = document.getElementById('camera-modal');
-    const video = modal?.querySelector('video');
-    if (!modal || !video) return;
-
-    navigator.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
-      .then(stream => {
-        video.srcObject = stream;
-        video.play();
-        modal.classList.add('active');
-
-        // Shutter
-        const shutter = modal.querySelector('.camera-shutter');
-        shutter.onclick = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          canvas.getContext('2d').drawImage(video, 0, 0);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-
-          // Save
-          const photo = {
-            id: 'photo_' + Date.now(),
-            src: dataUrl,
-            date: new Date().toISOString().slice(0,10),
-            time: new Date().toTimeString().slice(0,5),
-            location: '当前位置'
-          };
-          photos.push(photo);
-          try { localStorage.setItem('highland-photos', JSON.stringify(photos)); } catch(e) {}
-
-          // Flash effect
-          const flash = document.createElement('div');
-          flash.style.cssText = 'position:fixed;inset:0;background:white;z-index:999;animation:fadeIn 0.1s ease reverse';
-          document.body.appendChild(flash);
-          setTimeout(() => flash.remove(), 150);
-
-          showToast('📸 照片已保存');
-          renderPhotos();
-          closeCamera();
-        };
-      })
-      .catch(() => showToast('❌ 无法访问相机'));
-  }
-
-  function closeCamera() {
-    const modal = document.getElementById('camera-modal');
-    const video = modal?.querySelector('video');
-    if (video?.srcObject) {
-      video.srcObject.getTracks().forEach(t => t.stop());
-      video.srcObject = null;
-    }
-    modal?.classList.remove('active');
-  }
-
   // ===== Gestures =====
   function setupGestures() {
     let touchStartY = 0;
     const modal = document.getElementById('spot-modal');
+    modal?.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; });
+    modal?.addEventListener('touchend', (e) => { if (e.changedTouches[0].clientY - touchStartY > 100) closeModal(); });
 
-    modal?.addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0].clientY;
-    });
-
-    modal?.addEventListener('touchend', (e) => {
-      const diff = e.changedTouches[0].clientY - touchStartY;
-      if (diff > 100) closeModal();
-    });
-
-    // Swipe between pages
-    let swipeStartX = 0;
-    const pages = ['home', 'map', 'explore', 'chat', 'photos'];
-
-    document.addEventListener('touchstart', (e) => {
-      swipeStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    document.addEventListener('touchend', (e) => {
-      const diff = e.changedTouches[0].clientX - swipeStartX;
-      if (Math.abs(diff) < 80) return;
-      const idx = pages.indexOf(currentPage);
-      if (diff > 0 && idx > 0) navigateTo(pages[idx - 1]);
-      if (diff < 0 && idx < pages.length - 1) navigateTo(pages[idx + 1]);
-    }, { passive: true });
+    // Tab swipe disabled per user request
   }
 
   // ===== Toast =====
   function showToast(text) {
     let toast = document.querySelector('.toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.className = 'toast';
-      document.body.appendChild(toast);
-    }
+    if (!toast) { toast = document.createElement('div'); toast.className = 'toast'; document.body.appendChild(toast); }
     toast.textContent = text;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 3000);
   }
 
-  // ===== Export photos =====
+  // ===== Export =====
   function exportPhotos() {
-    const data = JSON.stringify(photos, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'highland-photos.json';
-    a.click(); URL.revokeObjectURL(url);
-    showToast('📦 照片数据已导出');
+    fetch('/api/photos')
+      .then(r => r.json())
+      .then(photos => {
+        const blob = new Blob([JSON.stringify(photos, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'highland-photos.json'; a.click();
+        URL.revokeObjectURL(url);
+        showToast('📦 照片数据已导出');
+      });
   }
 
   // ===== Public API =====
   window.app = {
     openSpot, closeModal, open360, close360,
-    viewPhoto, closePhotoViewer, closeCamera,
+    viewPhoto, closePhotoViewer,
     exportPhotos, navigateTo
   };
 
