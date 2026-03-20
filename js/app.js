@@ -802,7 +802,7 @@
     document.body.style.overflow = '';
   }
 
-  // ===== 360° Viewer =====
+  // ===== 360° Viewer (Google Street View Embed) =====
   function open360(id) {
     const spot = SPOTS.find(s => s.id === id);
     if (!spot) return;
@@ -811,43 +811,16 @@
     const viewer = document.getElementById('viewer-360');
     const scene = viewer.querySelector('.viewer-360-scene');
     const title = viewer.querySelector('.viewer-360-title');
-    title.textContent = spot.name;
+    title.textContent = spot.name + ' · 360° 实景';
 
-    const panoramaUrls = {
-      glencoe: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Glencoe_panorama.jpg/2560px-Glencoe_panorama.jpg',
-      skye: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg/2560px-Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg',
-      lochness: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Loch_Ness_from_A82_road.jpg/2560px-Loch_Ness_from_A82_road.jpg',
-      edinburgh: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Edinburgh_from_Arthur%27s_Seat.jpg/2560px-Edinburgh_from_Arthur%27s_Seat.jpg',
-      bennevis: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Ben_Nevis_from_Banavie.jpg/2560px-Ben_Nevis_from_Banavie.jpg',
-      jacobite: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Glenfinnan_Viaduct.jpg/2560px-Glenfinnan_Viaduct.jpg'
-    };
+    // Google Maps embed with Street View at each location's coordinates
+    const embedUrl = `https://www.google.com/maps/embed?pb=!4v0!6m8!1m7!1s!2m2!1d${spot.lat}!2d${spot.lng}!3f0!4f0!5f0.7820865974627469&maptype=streetview&layer=streetview&source=apiv3&center=${spot.lat},${spot.lng}&zoom=14`;
 
-    const imgUrl = panoramaUrls[spot.id];
-    if (imgUrl) {
-      scene.style.backgroundImage = `url(${imgUrl})`;
-      scene.style.backgroundSize = 'auto 100%';
-      scene.style.backgroundRepeat = 'repeat-x';
-      scene.style.backgroundPosition = '0% 50%';
-    } else {
-      scene.style.background = spot.gradient;
-    }
-
-    let dragging = false, startX = 0, startY = 0, bgX = 0, bgY = 50;
-    const onMove = (e) => {
-      if (!dragging) return;
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      bgX += (clientX - startX) * 0.3;
-      bgY += (clientY - startY) * 0.1;
-      bgY = Math.max(20, Math.min(80, bgY));
-      scene.style.backgroundPosition = `${bgX}px ${bgY}%`;
-      startX = clientX; startY = clientY;
-    };
-    const onStart = (e) => { dragging = true; startX = e.touches ? e.touches[0].clientX : e.clientX; startY = e.touches ? e.touches[0].clientY : e.clientY; };
-    const onEnd = () => { dragging = false; };
-    scene.onmousedown = onStart; scene.ontouchstart = onStart;
-    document.onmousemove = onMove; document.ontouchmove = onMove;
-    document.onmouseup = onEnd; document.ontouchend = onEnd;
+    // Use iframe for real 360° experience
+    scene.innerHTML = `<iframe 
+      src="https://www.google.com/maps?q=${spot.lat},${spot.lng}&z=15&layer=c&cbll=${spot.lat},${spot.lng}&cbp=11,0,0,0,0&output=svembed" 
+      style="width:100%;height:100%;border:none;border-radius:12px" 
+      allowfullscreen loading="lazy"></iframe>`;
 
     viewer.classList.add('active');
   }
