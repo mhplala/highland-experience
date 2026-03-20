@@ -3,8 +3,8 @@
   'use strict';
 
   // ===== Data =====
-  const TRIP_START = new Date('2026-04-10T21:00:00Z'); // Departure from London Euston
-  const TRIP_ARRIVE = new Date('2026-04-11T07:30:00Z'); // Arrival Glasgow
+  const TRIP_START = new Date('2026-03-20T23:45:00Z'); // Departure from London Euston
+  const TRIP_ARRIVE = new Date('2026-03-21T07:30:00Z'); // Arrival Glasgow
 
   const TRAIN_ROUTE = {
     from: { name: 'London Euston', lat: 51.5284, lng: -0.1331 },
@@ -123,25 +123,31 @@
   ];
 
   const SCHEDULE = [
-    { time: 'Day 0 · 21:00', title: '卧铺夜车出发', desc: 'London Euston → Glasgow Central', status: 'done' },
-    { time: 'Day 1 · 07:30', title: '抵达格拉斯哥', desc: '早餐 & 城市速览', status: 'active' },
-    { time: 'Day 1 · 10:00', title: 'Jacobite蒸汽火车', desc: 'Fort William → Mallaig', status: '' },
-    { time: 'Day 2 · 09:00', title: 'Glen Coe徒步', desc: 'Lost Valley经典路线', status: '' },
-    { time: 'Day 2 · 15:00', title: '尼斯湖巡游', desc: 'Urquhart Castle遗址', status: '' },
-    { time: 'Day 3 · 08:00', title: 'Isle of Skye', desc: 'Old Man of Storr & Fairy Pools', status: '' },
-    { time: 'Day 3 · 18:00', title: 'Portree港口晚餐', desc: '新鲜海鲜 & 日落', status: '' },
-    { time: 'Day 4 · 07:00', title: 'Ben Nevis挑战', desc: '英国最高峰攀登', status: '' },
-    { time: 'Day 5 · 10:00', title: '爱丁堡文化日', desc: 'Royal Mile & Arthur\'s Seat', status: '' },
-    { time: 'Day 5 · 20:00', title: '威士忌品鉴', desc: 'Scotch Whisky Experience', status: '' }
+    { time: '3/20 周五 23:45', title: '🌙 卧铺夜车出发', desc: 'London Euston → Glasgow Central · Coach M, Room 8/9/10', status: 'done' },
+    { time: '3/21 周六 07:30', title: '🌅 抵达格拉斯哥', desc: '与包车司机碰头', status: 'active' },
+    { time: '3/21 周六 09:00', title: '🏞️ 罗蒙湖 Luss 小镇', desc: '湖畔散步 + 热咖啡', status: '' },
+    { time: '3/21 周六 11:30', title: '⛰️ 格伦科峡谷 Glencoe', desc: '三姐妹山拍照 + 客栈简餐', status: '' },
+    { time: '3/21 周六 15:00', title: '🏰 Isle of Eriska', desc: '跨私人小桥登岛 · 泳池/水疗/森林步道', status: '' },
+    { time: '3/21 周六 19:00', title: '🍽️ 古堡晚宴', desc: '米其林推荐', status: '' },
+    { time: '3/22 周日 09:00', title: '☀️ 苏格兰全套早餐', desc: '自然醒，悠闲退房', status: '' },
+    { time: '3/22 周日 11:00', title: '🦞 Oban 海鲜之都', desc: 'Seafood Hut 生蚝/扇贝/龙虾', status: '' },
+    { time: '3/22 周日 14:15', title: '🏚️ Kilchurn Castle', desc: 'Loch Awe 湖畔废墟拍照', status: '' },
+    { time: '3/22 周日 18:00', title: '🍻 Glasgow 晚餐', desc: '市中心晚餐', status: '' },
+    { time: '3/22 周日 23:15', title: '🚂 回程卧铺', desc: 'Club Twin升级版 · Coach L, Room 2/3/4', status: '' },
+    { time: '3/23 周一 07:00', title: '💪 满血复活', desc: '抵达 London Euston，吃早餐，上班！', status: '' }
   ];
 
   const CHAT_MESSAGES = [
-    { from: 'system', text: '🏔 欢迎来到苏格兰高地探险队！', time: '刚刚' },
-    { from: 'alice', name: 'Alice', text: '大家今晚卧铺车上见！我已经到Euston了', time: '18:30' },
-    { from: 'bob', name: 'Bob', text: '带了三瓶单麦威士忌，车上慢慢品 🥃', time: '18:45' },
-    { from: 'carol', name: 'Carol', text: '查了天气，明天Glasgow有阵雨，但下午放晴☀️', time: '19:02' },
-    { from: 'alice', name: 'Alice', text: '完美！雨中的高地才是真正的高地', time: '19:05' },
-    { from: 'bob', name: 'Bob', text: '记得穿好Gore-Tex，别学我上次在湖区被淋成狗 😂', time: '19:10' },
+    { from: 'system', text: '🏔 苏格兰高地探险队 · 3月20-23日', time: '' },
+    { from: 'wz', name: '王泽', text: '哥哥们，大家带好自己洗漱用品，酒店除了提供床之外，毛都不给', time: '19:30' },
+    { from: 'wz', name: '王泽', text: '10:30 PM 在 Euston 车站集合！', time: '21:00' },
+    { from: 'clc', name: '蔡李超', text: '我到了，在大厅等', time: '22:20' },
+    { from: 'jxr', name: '靳雪荣', text: '出发了 差不多22:30到', time: '22:25' },
+    { from: 'steve', name: 'Steve', text: '我2234', time: '22:26' },
+    { from: 'wz', name: '王泽', text: '我还在洗澡…马上到！', time: '22:30' },
+    { from: 'james', name: 'James', text: '记得带护照！', time: '22:31' },
+    { from: 'cj', name: '蔡骏', text: '我在 Burger King', time: '22:35' },
+    { from: 'clc', name: '蔡李超', text: '我买好牌了 🃏', time: '22:37' },
   ];
 
   // ===== State =====
@@ -172,7 +178,7 @@
 
     // PWA
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
 
     // Periodic train update
@@ -601,21 +607,39 @@
     const title = viewer.querySelector('.viewer-360-title');
 
     title.textContent = spot.name;
-    scene.style.background = spot.gradient;
-    scene.style.backgroundSize = '200% 200%';
 
-    // Simulate 360° by panning gradient on drag
-    let dragging = false, startX = 0, startY = 0, bgX = 50, bgY = 50;
+    // Real panoramic images from Wikimedia Commons (public domain / CC)
+    const panoramaUrls = {
+      glencoe: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Glencoe_panorama.jpg/2560px-Glencoe_panorama.jpg',
+      skye: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg/2560px-Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg',
+      lochness: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Loch_Ness_from_A82_road.jpg/2560px-Loch_Ness_from_A82_road.jpg',
+      edinburgh: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Edinburgh_from_Arthur%27s_Seat.jpg/2560px-Edinburgh_from_Arthur%27s_Seat.jpg',
+      bennevis: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Ben_Nevis_from_Banavie.jpg/2560px-Ben_Nevis_from_Banavie.jpg',
+      jacobite: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Glenfinnan_Viaduct.jpg/2560px-Glenfinnan_Viaduct.jpg'
+    };
+
+    const imgUrl = panoramaUrls[spot.id];
+    if (imgUrl) {
+      scene.style.backgroundImage = `url(${imgUrl})`;
+      scene.style.backgroundSize = 'auto 100%';
+      scene.style.backgroundRepeat = 'repeat-x';
+      scene.style.backgroundPosition = '0% 50%';
+    } else {
+      scene.style.background = spot.gradient;
+      scene.style.backgroundSize = '200% 200%';
+    }
+
+    // Drag to pan panorama
+    let dragging = false, startX = 0, startY = 0, bgX = 0, bgY = 50;
 
     const onMove = (e) => {
       if (!dragging) return;
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      bgX += (clientX - startX) * 0.2;
+      bgX += (clientX - startX) * 0.3;
       bgY += (clientY - startY) * 0.1;
-      bgX = ((bgX % 200) + 200) % 200;
-      bgY = Math.max(0, Math.min(100, bgY));
-      scene.style.backgroundPosition = `${bgX}% ${bgY}%`;
+      bgY = Math.max(20, Math.min(80, bgY));
+      scene.style.backgroundPosition = `${bgX}px ${bgY}%`;
       startX = clientX; startY = clientY;
     };
 
@@ -702,11 +726,12 @@
     // Simulate response
     setTimeout(() => {
       const responses = [
-        { from: 'alice', name: 'Alice', text: '好的！到时候见 👋' },
-        { from: 'bob', name: 'Bob', text: '哈哈 期待！🏔' },
-        { from: 'carol', name: 'Carol', text: '收到收到 ✨' },
-        { from: 'bob', name: 'Bob', text: '我查了一下，那个时间可以的 👍' },
-        { from: 'alice', name: 'Alice', text: '太棒了！这趟旅行一定很精彩' },
+        { from: 'wz', name: '王泽', text: '收到！大家记得带护照 🛂' },
+        { from: 'james', name: 'James', text: '好的好的 👍' },
+        { from: 'clc', name: '蔡李超', text: '了解！🃏' },
+        { from: 'jxr', name: '靳雪荣', text: '在路上了 🚶' },
+        { from: 'cj', name: '蔡骏', text: 'OK 收到 ✅' },
+        { from: 'steve', name: 'Steve', text: '👍' },
       ];
       const resp = responses[Math.floor(Math.random() * responses.length)];
       resp.time = time;
@@ -750,16 +775,8 @@
     const container = document.getElementById('photo-timeline');
     if (!container) return;
 
-    // Demo photos + saved photos
-    const allPhotos = [
-      ...photos,
-      { id: 'demo1', src: null, color: '#1a365d', location: 'Glen Coe', date: '2026-04-12', time: '10:30' },
-      { id: 'demo2', src: null, color: '#312e81', location: 'Isle of Skye', date: '2026-04-13', time: '14:20' },
-      { id: 'demo3', src: null, color: '#064e3b', location: 'Loch Ness', date: '2026-04-12', time: '16:00' },
-      { id: 'demo4', src: null, color: '#7c2d12', location: 'Edinburgh', date: '2026-04-15', time: '11:00' },
-      { id: 'demo5', src: null, color: '#1e3a5f', location: 'Ben Nevis', date: '2026-04-14', time: '09:30' },
-      { id: 'demo6', src: null, color: '#991b1b', location: 'Glenfinnan', date: '2026-04-11', time: '13:00' },
-    ];
+    // Only real photos (user-captured)
+    const allPhotos = [...photos];
 
     // Group by date
     const groups = {};
@@ -770,6 +787,17 @@
     });
 
     const sortedDates = Object.keys(groups).sort().reverse();
+
+    if (sortedDates.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:3rem 1rem;color:var(--text-muted)">
+          <div style="font-size:3rem;margin-bottom:1rem">📸</div>
+          <div style="font-size:1.1rem;margin-bottom:0.5rem">还没有照片</div>
+          <div style="font-size:0.85rem">点击右下角相机按钮开始记录高地之旅！</div>
+        </div>
+      `;
+      return;
+    }
 
     container.innerHTML = sortedDates.map(date => {
       const label = new Date(date + 'T00:00:00').toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' });
