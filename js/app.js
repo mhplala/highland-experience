@@ -719,6 +719,31 @@
     });
 
     setTimeout(() => map.invalidateSize(), 200);
+
+    // Show user's real-time location
+    if (navigator.geolocation) {
+      let userMarker = null;
+      const userIcon = L.divIcon({
+        html: '<div style="width:14px;height:14px;background:#3b82f6;border:3px solid white;border-radius:50%;box-shadow:0 0 10px rgba(59,130,246,0.6)"></div>',
+        className: '', iconSize: [14, 14], iconAnchor: [7, 7]
+      });
+
+      navigator.geolocation.watchPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          if (userMarker) {
+            userMarker.setLatLng([lat, lng]);
+          } else {
+            userMarker = L.marker([lat, lng], { icon: userIcon }).addTo(map);
+            userMarker.bindPopup('<strong>📍 我的位置</strong>');
+            map.setView([lat, lng], 13);
+          }
+        },
+        () => { /* location denied, ignore */ },
+        { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
+      );
+    }
   }
 
   // ===== Spots =====
