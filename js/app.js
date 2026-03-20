@@ -91,6 +91,7 @@
     {
       id: 'jacobite', name: 'Jacobite Steam Train', tag: '哈利波特', meta: '蒸汽火车 · Glenfinnan高架桥',
       lat: 56.8760, lng: -5.4386, color: '#991b1b',
+      cover: 'https://images.unsplash.com/photo-1597655601841-214a4cfe8b2c?w=600&q=80',
       gradient: 'linear-gradient(135deg, #991b1b 0%, #450a0a 100%)',
       subtitle: '霍格沃茨特快的原型',
       story: `Jacobite Steam Train被誉为"世界上最伟大的铁路旅程"。旅程的高潮是穿越Glenfinnan Viaduct——一座建于1901年的21拱高架桥，就是《哈利·波特》电影中霍格沃茨特快列车驶过的那座桥。`,
@@ -758,7 +759,7 @@
 
     grid.innerHTML = SPOTS.map(spot => `
       <div class="spot-card" data-id="${spot.id}" onclick="app.openSpot('${spot.id}')">
-        <div class="spot-bg" style="background:${spot.gradient}"></div>
+        <div class="spot-bg" style="background:${spot.cover ? `url(${spot.cover}) center/cover no-repeat` : spot.gradient}"></div>
         <div class="spot-overlay"></div>
         <div class="spot-360" onclick="event.stopPropagation();app.open360('${spot.id}')">360°</div>
         <div class="spot-content">
@@ -777,7 +778,7 @@
     const modal = document.getElementById('spot-modal');
     const content = modal.querySelector('.modal-body');
     const hero = modal.querySelector('.modal-hero');
-    hero.style.background = spot.gradient;
+    hero.style.background = spot.cover ? `url(${spot.cover}) center/cover no-repeat` : spot.gradient;
 
     content.innerHTML = `
       <div class="modal-title">${spot.name}</div>
