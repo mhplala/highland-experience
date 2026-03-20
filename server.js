@@ -300,3 +300,188 @@ function broadcastChips() {
   const msg = JSON.stringify({ type: 'chips', players, logs });
   wss.clients.forEach(c => { if (c.readyState === 1) c.send(msg); });
 }
+
+// ===== Poker API =====
+let pokerState = {
+  players: [], pot: 0, currentBet: 0, round: 'waiting',
+  dealer: 0, activePlayer: '', bigBlind: 20, smallBlind: 10, logs: []
+};
+
+function broadcastPoker() {
+  const msg = JSON.stringify({ type: 'poker', state: pokerState });
+  wss.clients.forEach(c => { if (c.readyState === 1) c.send(msg); });
+}
+
+function pokerLog(text) {
+  const t = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  pokerState.logs.push(`[${t}] ${text}`);
+  if (pokerState.logs.length > 100) pokerState.logs = pokerState.logs.slice(-50);
+}
+
+app.get('/api/poker', (req, res) => res.json(pokerState));
+
+app.post('/api/poker/join', (req, res) => {
+  const { player, buyIn } = req.body;
+  if (!player) return res.status(400).json({ error: '需要名字' });
+  if (pokerState.players.length >= 6) return res.status(400).json({ error: '满员了' });
+  
+  const existing = pokerState.players.find(p => p.name === player);
+  if (existing) {
+    if (buyIn) { existing.chips += buyIn; pokerLog(`${player} 补充筹码 +${buyIn}`); }
+    broadcastPoker(); return res.json({ success: true });
+  }
+  
+  pokerState.players.push({
+    name: player, chips: buyIn || 1000, currentBet: 0,
+    folded: false, allIn: false, totalBet: 0
+  });
+  pokerLog(`${player} 坐下，筹码 ${buyIn || 1000}`);
+  broadcastPoker();
+  res.json({ success: true });
+});
+
+app.post('/api/poker/action', (req, res) => {
+  const { player, action, amount } = req.body;
+  const p = pokerState.players.find(x => x.name === player);
+  if (!p) return res.status(400).json({ error: '玩家不存在' });
+  if (p.folded) return res.status(400).json({ error: '已弃牌' });
+
+  switch (action) {
+    case 'fold':
+      p.folded = true;
+      pokerLog(`${player} 弃牌 🃏`);
+      break;
+
+    case 'check':
+      if (pokerState.currentBet > p.currentBet) return res.status(400).json({ error: '不能过牌，需要跟注' });
+      pokerLog(`${player} 过牌 ✋`);
+      break;
+
+    case 'call': {
+      const callAmt = Math.min(pokerState.currentBet - p.currentBet, p.chips);
+      p.chips -= callAmt;
+      p.currentBet += callAmt;
+      p.totalBet += callAmt;
+      pokerState.pot += callAmt;
+      if (p.chips === 0) p.allIn = true;
+      pokerLog(`${player} 跟注 ${callAmt}${p.allIn ? ' (ALL IN!)' : ''}`);
+      break;
+    }
+
+    case 'raise': {
+      const raiseAmt = Math.min(amount, p.chips);
+      const totalNeeded = pokerState.currentBet - p.currentBet + raiseAmt;
+      const actual = Math.min(totalNeeded, p.chips);
+      p.chips -= actual;
+      p.currentBet += actual;
+      p.totalBet += actual;
+      pokerState.pot += actual;
+      pokerState.currentBet = p.currentBet;
+      if (p.chips === 0) p.allIn = true;
+      pokerLog(`${player} 加注到 ${p.currentBet}${p.allIn ? ' (ALL IN!)' : ''} 💰`);
+      break;
+    }
+
+    case 'allin': {
+      const allAmt = p.chips;
+      p.currentBet += allAmt;
+      p.totalBet += allAmt;
+      pokerState.pot += allAmt;
+      p.chips = 0;
+      p.allIn = true;
+      if (p.currentBet > pokerState.currentBet) pokerState.currentBet = p.currentBet;
+      pokerLog(`${player} ALL IN ${allAmt}! 🔥`);
+      break;
+    }
+
+    default:
+      return res.status(400).json({ error: '未知操作' });
+  }
+
+  // Auto check: only one player left?
+  const active = pokerState.players.filter(p => !p.folded);
+  if (active.length === 1) {
+    pokerLog(`🏆 ${active[0].name} 获胜（其他人弃牌），赢得 ${pokerState.pot}`);
+    active[0].chips += pokerState.pot;
+    pokerState.pot = 0;
+    pokerState.round = 'waiting';
+  }
+
+  broadcastPoker();
+  res.json({ success: true });
+});
+
+app.post('/api/poker/admin', (req, res) => {
+  const { action, winner } = req.body;
+
+  switch (action) {
+    case 'newhand': {
+      const bb = pokerState.bigBlind;
+      const sb = pokerState.smallBlind;
+      pokerState.dealer = (pokerState.dealer + 1) % pokerState.players.length;
+      pokerState.round = 'preflop';
+      pokerState.pot = 0;
+      pokerState.currentBet = bb;
+      
+      pokerState.players.forEach(p => {
+        p.currentBet = 0; p.folded = false; p.allIn = false; p.totalBet = 0;
+      });
+
+      // Post blinds
+      const sbIdx = (pokerState.dealer + 1) % pokerState.players.length;
+      const bbIdx = (pokerState.dealer + 2) % pokerState.players.length;
+      const sbPlayer = pokerState.players[sbIdx];
+      const bbPlayer = pokerState.players[bbIdx];
+
+      const sbAmt = Math.min(sb, sbPlayer.chips);
+      sbPlayer.chips -= sbAmt; sbPlayer.currentBet = sbAmt; sbPlayer.totalBet = sbAmt;
+      pokerState.pot += sbAmt;
+
+      const bbAmt = Math.min(bb, bbPlayer.chips);
+      bbPlayer.chips -= bbAmt; bbPlayer.currentBet = bbAmt; bbPlayer.totalBet = bbAmt;
+      pokerState.pot += bbAmt;
+
+      pokerLog(`--- 新一手 --- D: ${pokerState.players[pokerState.dealer].name}`);
+      pokerLog(`小盲 ${sbPlayer.name}: ${sbAmt} / 大盲 ${bbPlayer.name}: ${bbAmt}`);
+      break;
+    }
+
+    case 'nextround': {
+      const rounds = ['preflop', 'flop', 'turn', 'river', 'showdown'];
+      const idx = rounds.indexOf(pokerState.round);
+      if (idx < rounds.length - 1) {
+        pokerState.round = rounds[idx + 1];
+        pokerState.players.forEach(p => p.currentBet = 0);
+        pokerState.currentBet = 0;
+        pokerLog(`--- ${pokerState.round.toUpperCase()} ---`);
+      }
+      break;
+    }
+
+    case 'settle': {
+      if (!winner) return res.status(400).json({ error: '需要指定赢家' });
+      const w = pokerState.players.find(p => p.name === winner);
+      if (!w) return res.status(400).json({ error: '赢家不存在' });
+      w.chips += pokerState.pot;
+      pokerLog(`🏆 ${winner} 赢得底池 ${pokerState.pot}!`);
+      pokerState.pot = 0;
+      pokerState.round = 'waiting';
+      pokerState.currentBet = 0;
+      pokerState.players.forEach(p => { p.currentBet = 0; p.folded = false; p.allIn = false; p.totalBet = 0; });
+      break;
+    }
+
+    case 'reset':
+      pokerState = {
+        players: [], pot: 0, currentBet: 0, round: 'waiting',
+        dealer: 0, activePlayer: '', bigBlind: 20, smallBlind: 10, logs: ['🔄 牌桌已重置']
+      };
+      break;
+
+    default:
+      return res.status(400).json({ error: '未知操作' });
+  }
+
+  broadcastPoker();
+  res.json({ success: true });
+});

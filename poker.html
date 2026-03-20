@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>🃏 德州扑克</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#0a0f1a;--card:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.1);--text:#f1f5f9;--muted:#64748b;--accent:#3b82f6;--green:#22c55e;--red:#ef4444;--gold:#f59e0b;--radius:14px}
+    body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-user-select:none;user-select:none}
+    .app{max-width:500px;margin:0 auto;padding:0.75rem;padding-bottom:env(safe-area-inset-bottom)}
+
+    /* Header */
+    .hdr{text-align:center;padding:1rem 0 0.5rem}
+    .hdr h1{font-size:1.5rem}
+    .hdr .sub{color:var(--muted);font-size:0.8rem;margin-top:0.2rem}
+    .live{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:4px;animation:pulse 2s infinite}
+    @keyframes pulse{50%{opacity:.4}}
+
+    /* Setup */
+    .setup{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
+    .setup h2{font-size:1rem;margin-bottom:0.75rem}
+    .setup-row{display:flex;gap:0.5rem;margin-bottom:0.5rem}
+    .setup-row input,.setup-row select{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:0.6rem;color:var(--text);font-size:0.9rem;outline:none}
+    .setup-row input:focus{border-color:var(--accent)}
+    .btn{border:none;border-radius:10px;padding:0.65rem 1.2rem;font-weight:600;cursor:pointer;font-size:0.9rem;transition:all 0.2s}
+    .btn:active{transform:scale(0.96)}
+    .btn-primary{background:var(--accent);color:#fff;width:100%}
+    .btn-green{background:var(--green);color:#fff}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-gold{background:var(--gold);color:#000}
+    .btn-ghost{background:rgba(255,255,255,0.08);color:var(--text)}
+    .btn-sm{padding:0.45rem 0.8rem;font-size:0.8rem}
+
+    /* Table */
+    .table-area{background:radial-gradient(ellipse at center,#0d4a2e 0%,#062a19 70%,#031a10 100%);border:3px solid #1a5c3a;border-radius:50%;width:100%;aspect-ratio:1.6;margin:0.75rem 0;position:relative;overflow:hidden;box-shadow:inset 0 0 40px rgba(0,0,0,0.5)}
+    .pot-display{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+    .pot-label{font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px}
+    .pot-amount{font-size:1.8rem;font-weight:800;color:var(--gold);text-shadow:0 2px 8px rgba(0,0,0,0.5)}
+    .pot-round{font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.2rem}
+
+    /* Seats */
+    .seat{position:absolute;width:70px;text-align:center;transform:translate(-50%,-50%)}
+    .seat-avatar{width:40px;height:40px;border-radius:50%;margin:0 auto 0.2rem;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;border:2px solid var(--border);transition:all 0.3s}
+    .seat-avatar.active{border-color:var(--gold);box-shadow:0 0 12px rgba(245,158,11,0.4)}
+    .seat-avatar.folded{opacity:0.3}
+    .seat-avatar.dealer{border-color:var(--accent)}
+    .seat-name{font-size:0.65rem;color:rgba(255,255,255,0.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px}
+    .seat-chips{font-size:0.7rem;font-weight:600;color:var(--gold)}
+    .seat-bet{position:absolute;font-size:0.6rem;background:rgba(0,0,0,0.7);color:var(--gold);padding:0.15rem 0.4rem;border-radius:8px;white-space:nowrap}
+    .dealer-btn{position:absolute;width:20px;height:20px;background:var(--accent);color:#fff;border-radius:50%;font-size:0.6rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.4)}
+
+    /* Actions */
+    .actions-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:0.75rem}
+    .actions-bar h3{font-size:0.9rem;margin-bottom:0.6rem;display:flex;justify-content:space-between;align-items:center}
+    .act-row{display:flex;gap:0.4rem;margin-bottom:0.5rem;flex-wrap:wrap}
+    .raise-row{display:flex;gap:0.5rem;align-items:center}
+    .raise-row input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:0.5rem;color:var(--text);font-size:1rem;text-align:center;outline:none}
+    .quick-raise{display:flex;gap:0.3rem;margin-top:0.4rem;flex-wrap:wrap}
+    .qr-btn{background:rgba(245,158,11,0.12);color:var(--gold);border:1px solid rgba(245,158,11,0.25);border-radius:16px;padding:0.3rem 0.6rem;font-size:0.75rem;font-weight:600;cursor:pointer}
+    .qr-btn:active{background:var(--gold);color:#000}
+
+    /* Scoreboard */
+    .scoreboard{margin-bottom:0.75rem}
+    .sb-row{display:flex;align-items:center;padding:0.5rem 0.75rem;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:0.3rem;justify-content:space-between}
+    .sb-row.me{border-color:var(--accent);background:rgba(59,130,246,0.08)}
+    .sb-rank{width:22px;font-weight:700;font-size:0.85rem;color:var(--muted)}
+    .sb-name{flex:1;font-weight:600;font-size:0.9rem;margin-left:0.5rem}
+    .sb-chips{font-weight:700;color:var(--gold);font-size:1rem}
+    .sb-status{font-size:0.7rem;color:var(--muted);margin-left:0.5rem;min-width:36px;text-align:right}
+
+    /* Log */
+    .log{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem;max-height:200px;overflow-y:auto;margin-bottom:1rem}
+    .log-title{font-size:0.85rem;font-weight:600;margin-bottom:0.5rem}
+    .log-item{font-size:0.78rem;color:var(--muted);padding:0.2rem 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .log-item:last-child{border:none}
+
+    /* Admin */
+    .admin{margin-bottom:1rem}
+    .admin-row{display:flex;gap:0.4rem;flex-wrap:wrap}
+
+    .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#fff;padding:0.5rem 1rem;border-radius:16px;font-size:0.8rem;opacity:0;transition:opacity 0.3s;z-index:999}
+    .toast.show{opacity:1}
+    .hidden{display:none!important}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="hdr">
+    <h1>🃏 德州扑克</h1>
+    <div class="sub"><span class="live"></span>Highland Express · 实时同步</div>
+  </div>
+
+  <!-- Setup -->
+  <div class="setup" id="setupPanel">
+    <h2>加入牌桌</h2>
+    <div class="setup-row">
+      <input type="text" id="myName" placeholder="你的名字" />
+      <input type="number" id="buyIn" value="1000" min="100" step="100" />
+    </div>
+    <button class="btn btn-primary" onclick="joinTable()" style="margin-top:0.5rem">坐下</button>
+  </div>
+
+  <!-- Poker Table -->
+  <div class="table-area" id="pokerTable">
+    <div class="pot-display">
+      <div class="pot-label">底池</div>
+      <div class="pot-amount" id="potAmount">0</div>
+      <div class="pot-round" id="roundName">等待开始</div>
+    </div>
+  </div>
+
+  <!-- Scoreboard -->
+  <div class="scoreboard" id="scoreboard"></div>
+
+  <!-- Player Actions -->
+  <div class="actions-bar hidden" id="actionsPanel">
+    <h3>
+      <span>我的操作</span>
+      <span id="myChipDisplay" style="color:var(--gold)">0</span>
+    </h3>
+    <div class="act-row">
+      <button class="btn btn-red btn-sm" onclick="doAction('fold')">弃牌</button>
+      <button class="btn btn-ghost btn-sm" onclick="doAction('check')">过牌</button>
+      <button class="btn btn-green btn-sm" onclick="doAction('call')">跟注 <span id="callAmount"></span></button>
+      <button class="btn btn-gold btn-sm" onclick="doAction('allin')">All In</button>
+    </div>
+    <div class="raise-row">
+      <input type="number" id="raiseInput" placeholder="加注金额" min="1" />
+      <button class="btn btn-gold btn-sm" onclick="doAction('raise')">加注</button>
+    </div>
+    <div class="quick-raise">
+      <div class="qr-btn" onclick="setRaise('2bb')">2BB</div>
+      <div class="qr-btn" onclick="setRaise('3bb')">3BB</div>
+      <div class="qr-btn" onclick="setRaise('pot')">Pot</div>
+      <div class="qr-btn" onclick="setRaise('half')">1/2 Pot</div>
+      <div class="qr-btn" onclick="setRaise(100)">100</div>
+      <div class="qr-btn" onclick="setRaise(200)">200</div>
+      <div class="qr-btn" onclick="setRaise(500)">500</div>
+    </div>
+  </div>
+
+  <!-- Admin Controls -->
+  <div class="admin hidden" id="adminPanel">
+    <div class="admin-row">
+      <button class="btn btn-green btn-sm" onclick="adminAction('newhand')">🎴 发新一手</button>
+      <button class="btn btn-ghost btn-sm" onclick="adminAction('nextround')">➡️ 下一轮</button>
+      <button class="btn btn-ghost btn-sm" onclick="adminAction('settle')">💰 结算</button>
+      <button class="btn btn-red btn-sm" onclick="adminAction('reset')">🔄 重置</button>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="log">
+    <div class="log-title">📜 牌局记录</div>
+    <div id="logList"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API = window.location.origin;
+let ws, me = localStorage.getItem('poker-me') || '';
+let gameState = { players: [], pot: 0, currentBet: 0, round: 'waiting', dealer: 0, logs: [] };
+
+// Seat positions (6 players around ellipse)
+const SEAT_POS = [
+  { top: '85%', left: '50%', betTop: '-18px', betLeft: '50%' },   // bottom center (me)
+  { top: '65%', left: '10%', betTop: '0', betLeft: '80px' },      // bottom left
+  { top: '25%', left: '10%', betTop: '0', betLeft: '80px' },      // top left
+  { top: '10%', left: '50%', betTop: '48px', betLeft: '50%' },    // top center
+  { top: '25%', left: '90%', betTop: '0', betLeft: '-30px' },     // top right
+  { top: '65%', left: '90%', betTop: '0', betLeft: '-30px' },     // bottom right
+];
+
+const COLORS = ['#3b82f6','#ef4444','#22c55e','#f59e0b','#8b5cf6','#ec4899'];
+const ROUNDS = { waiting: '等待开始', preflop: '翻牌前', flop: '翻牌', turn: '转牌', river: '河牌', showdown: '摊牌' };
+
+if (me) { document.getElementById('myName').value = me; }
+connectWS();
+loadState();
+
+function connectWS() {
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(`${proto}//${location.host}`);
+  ws.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    if (data.type === 'poker') { gameState = data.state; render(); }
+  };
+  ws.onclose = () => setTimeout(connectWS, 3000);
+}
+
+async function loadState() {
+  try {
+    const res = await fetch(API + '/api/poker');
+    gameState = await res.json();
+    render();
+  } catch(e) {}
+}
+
+async function joinTable() {
+  const name = document.getElementById('myName').value.trim();
+  const buyIn = parseInt(document.getElementById('buyIn').value) || 1000;
+  if (!name) return toast('⚠️ 输入名字');
+  me = name;
+  localStorage.setItem('poker-me', me);
+  
+  const res = await fetch(API + '/api/poker/join', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ player: name, buyIn })
+  });
+  const data = await res.json();
+  if (data.error) return toast('❌ ' + data.error);
+  toast('🎰 坐下！筹码 ' + buyIn);
+  document.getElementById('setupPanel').classList.add('hidden');
+}
+
+async function doAction(action) {
+  let amount = 0;
+  if (action === 'raise') {
+    amount = parseInt(document.getElementById('raiseInput').value);
+    if (!amount || amount <= 0) return toast('⚠️ 输入加注金额');
+  }
+  const res = await fetch(API + '/api/poker/action', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ player: me, action, amount })
+  });
+  const data = await res.json();
+  if (data.error) return toast('❌ ' + data.error);
+  document.getElementById('raiseInput').value = '';
+}
+
+async function adminAction(action) {
+  let winner = '';
+  if (action === 'settle') {
+    const activePlayers = gameState.players.filter(p => !p.folded);
+    if (activePlayers.length === 0) return toast('⚠️ 没有活跃玩家');
+    winner = prompt('赢家名字？\n' + activePlayers.map(p => p.name).join(' / '));
+    if (!winner) return;
+  }
+  const res = await fetch(API + '/api/poker/admin', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ action, winner })
+  });
+  const data = await res.json();
+  if (data.error) return toast('❌ ' + data.error);
+}
+
+function setRaise(val) {
+  const bb = gameState.bigBlind || 20;
+  const pot = gameState.pot || 0;
+  let amount;
+  if (val === '2bb') amount = bb * 2;
+  else if (val === '3bb') amount = bb * 3;
+  else if (val === 'pot') amount = pot;
+  else if (val === 'half') amount = Math.floor(pot / 2);
+  else amount = val;
+  document.getElementById('raiseInput').value = amount;
+}
+
+function render() {
+  const { players, pot, currentBet, round, dealer, logs } = gameState;
+  
+  // Pot
+  document.getElementById('potAmount').textContent = pot.toLocaleString();
+  document.getElementById('roundName').textContent = ROUNDS[round] || round;
+
+  // Seats on table
+  const table = document.getElementById('pokerTable');
+  table.querySelectorAll('.seat,.dealer-btn').forEach(e => e.remove());
+  
+  // Reorder: put me at seat 0 (bottom)
+  let myIdx = players.findIndex(p => p.name === me);
+  
+  players.forEach((p, i) => {
+    let seatIdx = myIdx >= 0 ? (i - myIdx + 6) % 6 : i;
+    if (seatIdx >= SEAT_POS.length) return;
+    const pos = SEAT_POS[seatIdx];
+    
+    const seat = document.createElement('div');
+    seat.className = 'seat';
+    seat.style.top = pos.top;
+    seat.style.left = pos.left;
+
+    const isDealer = i === dealer;
+    const isFolded = p.folded;
+    const isActive = p.name === gameState.activePlayer;
+
+    seat.innerHTML = `
+      <div class="seat-avatar${isActive ? ' active' : ''}${isFolded ? ' folded' : ''}" style="background:${COLORS[i % 6]}20;color:${COLORS[i % 6]}">${p.name[0]}</div>
+      <div class="seat-name">${p.name}</div>
+      <div class="seat-chips">${p.chips.toLocaleString()}</div>
+      ${p.currentBet > 0 ? `<div class="seat-bet" style="top:${pos.betTop};left:${pos.betLeft};transform:translateX(-50%)">${p.currentBet}</div>` : ''}
+    `;
+    table.appendChild(seat);
+    
+    if (isDealer) {
+      const db = document.createElement('div');
+      db.className = 'dealer-btn';
+      db.textContent = 'D';
+      db.style.position = 'absolute';
+      db.style.top = `calc(${pos.top} - 25px)`;
+      db.style.left = `calc(${pos.left} + 30px)`;
+      table.appendChild(db);
+    }
+  });
+
+  // Scoreboard
+  const sorted = [...players].sort((a,b) => b.chips - a.chips);
+  document.getElementById('scoreboard').innerHTML = sorted.map((p, i) => {
+    const rank = i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1);
+    const status = p.folded ? '已弃' : p.allIn ? 'ALL IN' : '';
+    return `<div class="sb-row${p.name === me ? ' me' : ''}">
+      <span class="sb-rank">${rank}</span>
+      <span class="sb-name">${p.name}</span>
+      <span class="sb-status">${status}</span>
+      <span class="sb-chips">${p.chips.toLocaleString()}</span>
+    </div>`;
+  }).join('');
+
+  // My actions
+  const mePlayer = players.find(p => p.name === me);
+  if (mePlayer) {
+    document.getElementById('setupPanel').classList.add('hidden');
+    document.getElementById('actionsPanel').classList.remove('hidden');
+    document.getElementById('adminPanel').classList.remove('hidden');
+    document.getElementById('myChipDisplay').textContent = mePlayer.chips.toLocaleString();
+    const callAmt = Math.max(0, currentBet - (mePlayer.currentBet || 0));
+    document.getElementById('callAmount').textContent = callAmt > 0 ? callAmt : '';
+  }
+
+  // Logs
+  if (logs && logs.length) {
+    document.getElementById('logList').innerHTML = logs.slice(-30).reverse().map(l => 
+      `<div class="log-item">${l}</div>`
+    ).join('');
+  }
+}
+
+function toast(t) {
+  const el = document.getElementById('toast');
+  el.textContent = t; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
