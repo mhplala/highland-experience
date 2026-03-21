@@ -149,7 +149,7 @@ body {
 }
 .hero-bg {
   position: absolute; inset: 0;
-  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Glencoe_panorama.jpg/1280px-Glencoe_panorama.jpg') center/cover no-repeat, linear-gradient(135deg, #1a365d 0%, #0f172a 100%);
+  background: url('img/hero.svg') center/cover no-repeat;
 }
 @keyframes aurora {
   0% { background-position: 0% 50%; }

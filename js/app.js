@@ -21,7 +21,7 @@
     {
       id: 'glencoe', name: 'Glen Coe', tag: '必访', meta: '高地之心 · 壮丽峡谷',
       lat: 56.6823, lng: -5.1024, color: '#1a365d',
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Glencoe_panorama.jpg/640px-Glencoe_panorama.jpg',
+      cover: 'img/glencoe.svg',
       gradient: 'linear-gradient(135deg, #1a365d 0%, #2d3748 100%)',
       subtitle: '苏格兰最戏剧性的峡谷',
       story: `Glen Coe（格伦科峡谷）是苏格兰高地最震撼人心的自然景观。这个U型冰川峡谷两侧是陡峭的山壁，云雾常年缭绕，仿佛走入了史诗电影的布景。\n\n1692年，这里发生了臭名昭著的"格伦科大屠杀"——坎贝尔氏族在此屠杀了麦克唐纳氏族38人。\n\n现在的Glen Coe是徒步者的天堂。"Lost Valley"是最经典的路线，穿过瀑布和巨石，到达一片隐秘的高山草甸。`,
@@ -35,7 +35,7 @@
     {
       id: 'skye', name: 'Isle of Skye', tag: '梦幻之岛', meta: '天空岛 · 仙境般的地貌',
       lat: 57.2736, lng: -6.2155, color: '#312e81',
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg/640px-Old_Man_of_Storr%2C_Isle_of_Skye%2C_Scotland_-_Diliff.jpg',
+      cover: 'img/skye.svg',
       gradient: 'linear-gradient(135deg, #312e81 0%, #1e1b4b 100%)',
       subtitle: '维京人称之为"云雾之岛"',
       story: `Isle of Skye（天空岛）是苏格兰最浪漫的存在。Old Man of Storr是岛上最标志性的地貌——一根50米高的玄武岩柱矗立在悬崖之上。Fairy Pools（仙女池）则是另一个奇迹，翡翠色的泉水在黑色岩石间流淌。`,
@@ -49,7 +49,7 @@
     {
       id: 'lochness', name: 'Loch Ness', tag: '传说', meta: '尼斯湖 · 水怪的故乡',
       lat: 57.3229, lng: -4.4244, color: '#064e3b',
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Loch_Ness_from_A82_road.jpg/640px-Loch_Ness_from_A82_road.jpg',
+      cover: 'img/lochness.svg',
       gradient: 'linear-gradient(135deg, #064e3b 0%, #0f172a 100%)',
       subtitle: '世界上最神秘的湖泊',
       story: `Loch Ness（尼斯湖）全长37公里，最深处达230米，储水量比英格兰和威尔士所有湖泊的总和还要多。这片深邃的淡水湖因为尼斯湖水怪传说而闻名世界。`,
@@ -63,7 +63,7 @@
     {
       id: 'edinburgh', name: 'Edinburgh', tag: '文化首都', meta: '爱丁堡 · 启蒙运动的摇篮',
       lat: 55.9533, lng: -3.1883, color: '#7c2d12',
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Edinburgh_from_Arthur%27s_Seat.jpg/640px-Edinburgh_from_Arthur%27s_Seat.jpg',
+      cover: 'img/edinburgh.svg',
       gradient: 'linear-gradient(135deg, #7c2d12 0%, #451a03 100%)',
       subtitle: '亚当·斯密在这里写下了《国富论》',
       story: `Edinburgh（爱丁堡）是一座建在七座山丘上的城市。18世纪的苏格兰启蒙运动在这里达到顶峰——大卫·休谟在此质疑人类认知的本质，亚当·斯密写出了《国富论》。`,
@@ -77,7 +77,7 @@
     {
       id: 'bennevis', name: 'Ben Nevis', tag: '挑战', meta: '英国最高峰 · 1,345米',
       lat: 56.7969, lng: -5.0036, color: '#1e3a5f',
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Ben_Nevis_from_Banavie.jpg/640px-Ben_Nevis_from_Banavie.jpg',
+      cover: 'img/bennevis.svg',
       gradient: 'linear-gradient(135deg, #1e3a5f 0%, #0c1929 100%)',
       subtitle: '站在不列颠群岛之巅',
       story: `Ben Nevis（本尼维斯山）海拔1,345米，是不列颠群岛的最高峰。每年约有15万人尝试登顶。最常走的"Pony Track"路线全程约16公里，需要7-9小时。`,
@@ -91,7 +91,7 @@
     {
       id: 'jacobite', name: 'Jacobite Steam Train', tag: '哈利波特', meta: '蒸汽火车 · Glenfinnan高架桥',
       lat: 56.8760, lng: -5.4386, color: '#991b1b',
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Glenfinnan_Viaduct.jpg/640px-Glenfinnan_Viaduct.jpg',
+      cover: 'img/jacobite.svg',
       gradient: 'linear-gradient(135deg, #991b1b 0%, #450a0a 100%)',
       subtitle: '霍格沃茨特快的原型',
       story: `Jacobite Steam Train被誉为"世界上最伟大的铁路旅程"。旅程的高潮是穿越Glenfinnan Viaduct——一座建于1901年的21拱高架桥，就是《哈利·波特》电影中霍格沃茨特快列车驶过的那座桥。`,
